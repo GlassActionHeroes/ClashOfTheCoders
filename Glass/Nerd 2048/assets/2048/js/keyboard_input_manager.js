@@ -53,23 +53,6 @@ KeyboardInputManager.prototype.listen = function () {
     }
   });
 
-  var retry = document.querySelector(".retry-button");
-  retry.addEventListener("click", this.restart.bind(this));
-  retry.addEventListener("touchend", this.restart.bind(this));
-
-  var keepPlaying = document.querySelector(".keep-playing-button");
-  keepPlaying.addEventListener("click", this.keepPlaying.bind(this));
-  keepPlaying.addEventListener("touchend", this.keepPlaying.bind(this));
-  
-  var showInfo = document.querySelector(".info-container");
-  showInfo.addEventListener("click", this.showInfo.bind(this));
-  showInfo.addEventListener("touchend", this.showInfo.bind(this));
-  
-  // var hideInfo = document.querySelector(".hide-info");
-  // hideInfo.addEventListener("click", this.hideInfo.bind(this));
-  // hideInfo.addEventListener("touchend", this.hideInfo.bind(this));
-  
-  
   // Listen to swipe events
   var touchStartClientX, touchStartClientY;
   var gameContainer = document.getElementsByClassName("game-container")[0];
@@ -105,19 +88,4 @@ KeyboardInputManager.prototype.listen = function () {
 KeyboardInputManager.prototype.restart = function (event) {
   event.preventDefault();
   this.emit("restart");
-};
-
-KeyboardInputManager.prototype.keepPlaying = function (event) {
-  event.preventDefault();
-  this.emit("keepPlaying");
-};
-
-KeyboardInputManager.prototype.showInfo = function (event) {
-  event.preventDefault();
-  this.emit("showInfo");
-};
-
-KeyboardInputManager.prototype.hideInfo = function (event) {
-  event.preventDefault();
-  this.emit("hideInfo");
 };
