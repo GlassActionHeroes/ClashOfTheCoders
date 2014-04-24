@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Nerd 2048</string>
+	<string name="single_player">Single Player</string>
+	<string name="collaborative">Collaborative</string>
 </resources>

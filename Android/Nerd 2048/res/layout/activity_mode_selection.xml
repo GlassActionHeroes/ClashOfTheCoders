@@ -14,12 +14,12 @@
 		<Button
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="Single Player"
+			android:text="@string/single_player"
 			android:onClick="singlePlayerClicked" />
 		<Button
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="Collaborative"
+			android:text="@string/collaborative"
 			android:onClick="collaborativeClicked" />
 	</LinearLayout>
 </FrameLayout>

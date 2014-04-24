@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "Comic Sans";
+    src: url("file:///android_asset/doge2048/style/fonts/comic_sans.eot");
+    src: url("file:///android_asset/doge2048/style/fonts/comic_sans.eot?#iefix") format("embedded-opentype"),
+         url("file:///android_asset/doge2048/style/fonts/comic_sans.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
