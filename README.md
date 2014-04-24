@@ -7,3 +7,8 @@ Glass Action Heroes has assembled a team of technical experts in a wide-variety 
 - Wine
 - Clicking Things
 - Servers?
+- Sages and mysteries
+- Pushing to master
+- Emojis
+- 
+- 
