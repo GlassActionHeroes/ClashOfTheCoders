@@ -508,7 +508,10 @@ hr {
 
   body {
     margin: 20px 0;
-    padding: 0 20px; }
+    padding: 0 0px; }
+    /*
+     G1234
+     padding: 0 20px; } */
 
   h1.title {
     font-size: 27px;
