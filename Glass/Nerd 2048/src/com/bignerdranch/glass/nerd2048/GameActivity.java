@@ -2,17 +2,16 @@ package com.bignerdranch.glass.nerd2048;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.webkit.WebView;
+import android.widget.GridView;
 
 public class GameActivity extends Activity {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.game_layout);
 
-		WebView webView = (WebView) findViewById(R.id.webview);
-		webView.getSettings().setJavaScriptEnabled(true);
-		webView.loadUrl("file:///android_asset/2048/index.html");
-	}
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this));
+    }
 }

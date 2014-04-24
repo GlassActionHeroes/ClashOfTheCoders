@@ -2,5 +2,7 @@
 <resources>
 	<string name="app_name">Nerd 2048</string>
     <string name="voice_trigger">Play 2048</string>
+    <string name="score">Score: %1$d</string>
+    <string name="best">Best: %1$d</string>
 
 </resources>
