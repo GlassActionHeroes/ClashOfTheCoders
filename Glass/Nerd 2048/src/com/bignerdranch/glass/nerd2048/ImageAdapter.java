@@ -1,6 +1,7 @@
 package com.bignerdranch.glass.nerd2048;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,14 +16,15 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams(80, 80, Gravity.CENTER));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setBackgroundColor(mContext.getResources().getColor(R.color.black));
+            imageView.setPadding(5, 5, 5, 5);
         } else {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageResource(mImageArray[position]);
         return imageView;
     }
 
@@ -31,7 +33,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return mImageArray.length;
     }
 
     public Object getItem(int position) {
@@ -42,7 +44,7 @@ public class ImageAdapter extends BaseAdapter {
         return 0;
     }
 
-    private Integer[] mThumbIds = {
+    private Integer[] mImageArray = {
             R.drawable.image_2,
             R.drawable.image_4,
             R.drawable.image_8,
@@ -55,6 +57,9 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.image_1024,
             R.drawable.image_2048,
             R.drawable.image_4096,
-            R.drawable.image_8192
+            R.drawable.image_8192,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none
     };
 }

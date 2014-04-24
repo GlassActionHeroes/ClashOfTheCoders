@@ -9,9 +9,17 @@ public class GameActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_layout);
+        setContentView(R.layout.layout_game);
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
+        GridView gridview = (GridView) findViewById(R.id.view_grid);
         gridview.setAdapter(new ImageAdapter(this));
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
     }
 }
