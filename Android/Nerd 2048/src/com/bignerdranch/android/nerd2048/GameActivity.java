@@ -54,12 +54,14 @@ public class GameActivity extends Activity {
 				return super.onOptionsItemSelected(item);
 			case R.id.single_player:
 				if (mGameMode != GameMode.SINGLE_PLAYER) {
+					PreferencesManager.setGameMode(this, GameMode.SINGLE_PLAYER);
 					mGameMode = GameMode.SINGLE_PLAYER;
 					updateUI();
 				}
 				return true;
 			case R.id.collaborative:
 				if (mGameMode != GameMode.COLLABORATIVE) {
+					PreferencesManager.setGameMode(this, GameMode.COLLABORATIVE);
 					mGameMode = GameMode.COLLABORATIVE;
 					updateUI();
 				}
