@@ -40,8 +40,10 @@
         android:layout_height="@dimen/screen_height"
         android:columnWidth="@dimen/grid_item_width"
         android:numColumns="4"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
+        android:paddingTop="10px"
+        android:paddingLeft="6px"
+        android:horizontalSpacing="4px"
+        android:verticalSpacing="4px"
         android:background="@color/white" />
 
     <LinearLayout
