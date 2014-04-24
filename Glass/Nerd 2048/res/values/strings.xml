@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Nerd 2048</string>
+    <string name="voice_trigger">Play 2048</string>
+
+</resources>
