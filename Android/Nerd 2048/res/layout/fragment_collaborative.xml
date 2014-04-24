@@ -3,8 +3,19 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<TextView
+	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="@string/collaborative" />
+		android:layout_gravity="center_horizontal|top"
+		android:layout_marginTop="30dp"
+		android:src="@drawable/quad_arrow"/>
+
+	<TextView
+		android:id="@+id/move_description"
+		android:layout_width="280dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal|bottom"
+		android:gravity="left"
+		android:layout_marginBottom="30dp"
+		android:textSize="30sp" />
 </FrameLayout>
