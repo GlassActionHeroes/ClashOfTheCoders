@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Nerd 2048</string>
+
+    <string name="app_name">Nerd 2048</string>
     <string name="voice_trigger">Play 2048</string>
-    <string name="score">Score: %1$d</string>
-    <string name="best">Best: %1$d</string>
+    <string name="score">Score:\n%1$d</string>
+    <string name="best">Best:\n%1$d</string>
+    <string name="nerds">Nerds:</string>
+    <string name="nerd_2">2 -- Paul</string>
+    <string name="nerd_4">4 -- Paul</string>
+    <string name="nerd_8">8 -- Paul</string>
+    <string name="nerd_16">16 -- Paul</string>
+    <string name="nerd_32">32 -- Paul</string>
+    <string name="nerd_64">64 -- Paul</string>
+    <string name="nerd_128">128 -- Paul</string>
+    <string name="nerd_256">256 -- Paul</string>
+    <string name="nerd_512">512 -- Paul</string>
+    <string name="nerd_1024">1024 -- Paul</string>
+    <string name="nerd_2048">2048 -- Paul</string>
+    <string name="nerd_4096">4096 -- Paul</string>
+    <string name="nerd_8192">8192 -- Paul</string>
 
 </resources>

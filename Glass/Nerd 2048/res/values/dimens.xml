@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="screen_width">640px</dimen>
+    <dimen name="screen_height">360px</dimen>
+    <dimen name="grid_item_width">80px</dimen>
+
+    <dimen name="margin_divider">5px</dimen>
+    <dimen name="text_scores_font_size">30px</dimen>
+    <dimen name="text_nerds_font_size">20px</dimen>
+    <dimen name="text_nerds_padding_left">15px</dimen>
+
+</resources>

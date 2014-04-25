@@ -1,6 +1,8 @@
 package com.bignerdranch.glass.nerd2048;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,14 +17,14 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams(80, 80, Gravity.CENTER));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setBackgroundColor(mContext.getResources().getColor(R.color.black));
+            imageView.setPadding(5, 5, 5, 5);
         } else {
             imageView = (ImageView) convertView;
         }
-
-        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageResource(mImageArray[position]);
         return imageView;
     }
 
@@ -30,31 +32,54 @@ public class ImageAdapter extends BaseAdapter {
         mContext = c;
     }
 
-    public int getCount() {
-        return mThumbIds.length;
+    public void actionLeft() {
+        Log.i("ImageAdapter", "left");
     }
 
-    public Object getItem(int position) {
+    public void actionRight() {
+        Log.i("ImageAdapter", "right");
+    }
+
+    public void actionUp() {
+        Log.i("ImageAdapter", "up");
+    }
+
+    public void actionDown() {
+        Log.i("ImageAdapter", "down");
+    }
+
+    @Override
+    public int getCount() {
+        return mImageArray.length;
+    }
+
+    @Override
+    public ImageView getItem(int position) {
         return null;
     }
 
+    @Override
     public long getItemId(int position) {
-        return 0;
+        return mImageArray[position];
     }
 
-    private Integer[] mThumbIds = {
-            R.drawable.image_2,
-            R.drawable.image_4,
-            R.drawable.image_8,
-            R.drawable.image_16,
-            R.drawable.image_32,
-            R.drawable.image_64,
-            R.drawable.image_128,
-            R.drawable.image_256,
-            R.drawable.image_512,
-            R.drawable.image_1024,
-            R.drawable.image_2048,
-            R.drawable.image_4096,
-            R.drawable.image_8192
+    private Integer[] mImageArray = {
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none
     };
+
 }

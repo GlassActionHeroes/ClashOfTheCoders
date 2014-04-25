@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/layout_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/screen_width"
+    android:layout_height="@dimen/screen_height">
+
+    <LinearLayout
+        android:id="@+id/view_scores"
+        android:layout_width="140px"
+        android:layout_height="@dimen/screen_height"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/text_score"
+            android:text="@string/score"
+            style="@style/text_scores" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="@color/white"
+            android:layout_margin="10px" />
+
+        <TextView
+            android:id="@+id/text_best"
+            android:text="@string/best"
+            style="@style/text_scores" />
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/view_grid"
+        android:layout_toRightOf="@+id/view_scores"
+        android:layout_alignParentTop="true"
+        android:layout_width="@dimen/screen_height"
+        android:layout_height="@dimen/screen_height"
+        android:columnWidth="@dimen/grid_item_width"
+        android:numColumns="4"
+        android:paddingTop="10px"
+        android:paddingLeft="6px"
+        android:horizontalSpacing="4px"
+        android:verticalSpacing="4px"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/view_nerds"
+        android:layout_toRightOf="@+id/view_grid"
+        android:layout_alignParentTop="true"
+        android:layout_width="140px"
+        android:layout_height="@dimen/screen_height"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_nerds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nerds"
+            android:textColor="@color/white"
+            android:textSize="30px"
+            android:paddingTop="5px"
+            android:layout_gravity="center_horizontal" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="@color/white"
+            android:layout_margin="@dimen/margin_divider" />
+
+        <TextView
+            android:id="@+id/text_nerd_2"
+            android:text="@string/nerd_2"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_4"
+            android:text="@string/nerd_4"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_8"
+            android:text="@string/nerd_8"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_16"
+            android:text="@string/nerd_16"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_32"
+            android:text="@string/nerd_32"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_64"
+            android:text="@string/nerd_64"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_128"
+            android:text="@string/nerd_128"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_256"
+            android:text="@string/nerd_256"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_512"
+            android:text="@string/nerd_512"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_1024"
+            android:text="@string/nerd_1024"
+            style="@style/text_nerds" />
+
+        <TextView
+            android:id="@+id/text_nerd_2048"
+            android:text="@string/nerd_2048"
+            style="@style/text_nerds" />
+
+    </LinearLayout>
+
+</RelativeLayout>
