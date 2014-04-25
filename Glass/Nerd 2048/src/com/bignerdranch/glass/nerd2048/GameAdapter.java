@@ -1,7 +1,6 @@
 package com.bignerdranch.glass.nerd2048;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,15 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-public class ImageAdapter extends BaseAdapter {
+public class GameAdapter extends BaseAdapter {
 
     private Context mContext;
 
     public View getView(int position, View convertView, ViewGroup parent) {
+        return getImage(position, convertView, parent);
+    }
+
+    private ImageView getImage(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(mContext);
@@ -28,24 +31,20 @@ public class ImageAdapter extends BaseAdapter {
         return imageView;
     }
 
-    public ImageAdapter(Context c) {
+    public void setImage(int position, int image) {
+        mImageArray[position] = image;
+        notifyDataSetChanged();
+    }
+
+    public void clearImages() {
+        for (int i = 0; i < mImageArray.length; i++) {
+            mImageArray[i] = R.drawable.image_none;
+        }
+        notifyDataSetChanged();
+    }
+
+    public GameAdapter(Context c) {
         mContext = c;
-    }
-
-    public void actionLeft() {
-        Log.i("ImageAdapter", "left");
-    }
-
-    public void actionRight() {
-        Log.i("ImageAdapter", "right");
-    }
-
-    public void actionUp() {
-        Log.i("ImageAdapter", "up");
-    }
-
-    public void actionDown() {
-        Log.i("ImageAdapter", "down");
     }
 
     @Override
@@ -63,7 +62,7 @@ public class ImageAdapter extends BaseAdapter {
         return mImageArray[position];
     }
 
-    private Integer[] mImageArray = {
+    private int[] mImageArray = {
             R.drawable.image_none,
             R.drawable.image_none,
             R.drawable.image_none,

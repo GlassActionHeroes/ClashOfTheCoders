@@ -15,6 +15,10 @@
         android:gravity="center">
 
         <TextView
+            android:text="@string/score_text"
+            style="@style/text_scores" />
+
+        <TextView
             android:id="@+id/text_score"
             android:text="@string/score"
             style="@style/text_scores" />
@@ -24,6 +28,10 @@
             android:layout_height="2px"
             android:background="@color/white"
             android:layout_margin="10px" />
+
+        <TextView
+            android:text="@string/best_text"
+            style="@style/text_scores" />
 
         <TextView
             android:id="@+id/text_best"

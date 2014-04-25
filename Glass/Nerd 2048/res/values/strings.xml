@@ -3,8 +3,14 @@
 
     <string name="app_name">Nerd 2048</string>
     <string name="voice_trigger">Play 2048</string>
-    <string name="score">Score:\n%1$d</string>
-    <string name="best">Best:\n%1$d</string>
+    <string name="menu_restart">Restart</string>
+    <string name="menu_quit">Quit</string>
+
+    <string name="score_text">Score:</string>
+    <string name="best_text">Best:</string>
+    <string name="score">%1$d</string>
+    <string name="best">%1$d</string>
+
     <string name="nerds">Nerds:</string>
     <string name="nerd_2">2 -- Paul</string>
     <string name="nerd_4">4 -- Paul</string>
