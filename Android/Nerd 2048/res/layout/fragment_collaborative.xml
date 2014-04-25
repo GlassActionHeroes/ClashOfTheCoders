@@ -4,18 +4,32 @@
 	android:layout_height="match_parent">
 
 	<ImageView
+		android:id="@+id/arrow"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal|top"
-		android:layout_marginTop="30dp"
-		android:src="@drawable/quad_arrow"/>
+		android:layout_marginTop="50dp"
+		android:src="@drawable/arrow_none"/>
 
-	<TextView
-		android:id="@+id/move_description"
-		android:layout_width="280dp"
+	<LinearLayout
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center_horizontal|bottom"
-		android:gravity="left"
-		android:layout_marginBottom="30dp"
-		android:textSize="30sp" />
+		android:layout_gravity="bottom"
+		android:orientation="vertical">
+
+		<TextView
+			android:id="@+id/move_description"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:layout_marginBottom="10dp"
+			android:gravity="left"
+			android:textSize="26sp" />
+
+		<com.bignerdranch.android.nerd2048.RoundTimerView
+			android:id="@+id/round_timer"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="50dp"/>
+	</LinearLayout>
 </FrameLayout>
