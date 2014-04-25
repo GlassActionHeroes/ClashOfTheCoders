@@ -23,7 +23,6 @@ public class CollaborativeFragment extends Fragment {
 	private static final String TAG = "CollaborativeFragment";
 
 	private static final String PUSHER_APP_KEY = "514e04bbf50ba9b0b0b6";
-	private static final String PUSHER_APP_SECRET = "b3eb40f3b6fd5e4bee2d";
 	private static final String PRIVATE_CHANNEL = "private-bnr_2048_channel";
 	private static final String EVENT_NAME = "client-send_direction";
 	private static final String DEFAULT_USERNAME = "Unknown Android Nerd";
@@ -56,8 +55,7 @@ public class CollaborativeFragment extends Fragment {
 		mPusher.connect(new ConnectionEventListener() {
 			@Override
 			public void onConnectionStateChange(ConnectionStateChange change) {
-				Log.d(TAG, "State changed to " + change.getCurrentState() +
-						" from " + change.getPreviousState());
+				Log.d(TAG, "State changed to " + change.getCurrentState() + " from " + change.getPreviousState());
 			}
 
 			@Override
@@ -75,7 +73,7 @@ public class CollaborativeFragment extends Fragment {
 
 					@Override
 					public void onSubscriptionSucceeded(String channelName) {
-
+						Log.d(TAG, "Subscription succeeded.");
 					}
 
 					@Override
@@ -83,6 +81,23 @@ public class CollaborativeFragment extends Fragment {
 						Log.d(TAG, "Received event: " + eventName + " with data: " + data);
 					}
 				});
+
+		mChannel.bind(EVENT_NAME, new PrivateChannelEventListener() {
+			@Override
+			public void onAuthenticationFailure(String message, Exception e) {
+				Log.d(TAG, String.format("Authentication failure due to [%s], exception was [%s]", message, e));
+			}
+
+			@Override
+			public void onSubscriptionSucceeded(String channelName) {
+				Log.d(TAG, "Subscription succeeded.");
+			}
+
+			@Override
+			public void onEvent(String channelName, String eventName, String data) {
+				Log.d(TAG, "Received event: " + eventName + " with data: " + data);
+			}
+		});
 	}
 
 	@Override
