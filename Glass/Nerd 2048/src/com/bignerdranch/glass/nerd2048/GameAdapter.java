@@ -1,6 +1,7 @@
 package com.bignerdranch.glass.nerd2048;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,12 @@ import android.widget.ImageView;
 
 public class GameAdapter extends BaseAdapter {
 
+    private static final String TAG = "GameAdapter";
+
     private Mode mMode;
     private Context mContext;
+
+    private int[] mImageArray;
 
     public View getView(int position, View convertView, ViewGroup parent) {
         return getImage(position, convertView, parent);
@@ -51,6 +56,50 @@ public class GameAdapter extends BaseAdapter {
     public GameAdapter(Context c, Mode mode) {
         mContext = c;
         mMode = mode;
+        setupArray();
+    }
+
+    private void setupArray() {
+        if (mMode == Mode.NUMBER) {
+            mImageArray = new int[]{
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none,
+                    R.drawable.image_none
+            };
+        } else {
+            mImageArray = new int[]{
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd,
+                    R.drawable.image_none_nerd
+            };
+        }
+
     }
 
     @Override
@@ -181,6 +230,9 @@ public class GameAdapter extends BaseAdapter {
 
     public void setMode(Mode mode) {
         mMode = mode;
+    }
+
+    public void convertMode() {
         if (mMode == Mode.NUMBER) {
             convertToNumberMode();
         } else {
@@ -436,24 +488,5 @@ public class GameAdapter extends BaseAdapter {
                 return R.drawable.image_none_nerd;
         }
     }
-
-    private int[] mImageArray = {
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none,
-            R.drawable.image_none
-    };
 
 }
