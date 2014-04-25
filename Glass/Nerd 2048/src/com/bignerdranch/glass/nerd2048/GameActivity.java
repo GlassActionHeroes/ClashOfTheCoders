@@ -59,10 +59,10 @@ public class GameActivity extends Activity {
         } else {
             mGameAdapter = new GameAdapter(this, Mode.NUMBER);
         }
-        mGestureDetector = createGestureDetector(this);
 
         GridView gridView = (GridView) findViewById(R.id.view_grid);
         gridView.setAdapter(mGameAdapter);
+        mGestureDetector = createGestureDetector(this);
 
         mScoreTextView = (TextView) findViewById(R.id.text_score);
         mBestTextView = (TextView) findViewById(R.id.text_best);
@@ -132,6 +132,7 @@ public class GameActivity extends Activity {
         } else {
             mGameAdapter.setMode(Mode.NUMBER);
         }
+        mGameAdapter.convertMode();
         updateTextViews();
     }
 
@@ -170,7 +171,10 @@ public class GameActivity extends Activity {
     }
 
     private void setupNewGame() {
-        mGameAdapter.setMode(Mode.NUMBER);
+        if (isNerdMode) {
+            switchMode();
+        }
+
         mGameOverTextView.setVisibility(View.INVISIBLE);
 
         mCurrentScore = 0;
