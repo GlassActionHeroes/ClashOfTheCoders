@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="countdown_bar_init_width">310dp</dimen>
+	<dimen name="countdown_bar_height">14dp</dimen>
+</resources>

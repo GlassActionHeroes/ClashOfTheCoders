@@ -4,4 +4,5 @@
 	<string name="single_player">Single Player</string>
 	<string name="collaborative">Collaborative</string>
 	<string name="next_move">Next Move:</string>
+	<string name="waiting_message">Waiting for the next round.</string>
 </resources>
