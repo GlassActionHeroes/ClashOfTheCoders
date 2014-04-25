@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.GridView;
 import android.widget.TextView;
+import com.bignerdranch.glass.nerd2048.GameAdapter.Mode;
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
 
@@ -17,10 +19,10 @@ public class GameActivity extends Activity {
     private static final String TAG = "GameActivity";
     private static final String KEY = "com.bignerdranch.glass";
     private static final String KEY_BEST = "com.bignerdranch.glass.best";
+    private static final String KEY_MODE = "com.bignerdranch.glass.mode";
 
     private Random random = new Random();
 
-    private GridView mGridView;
     private GameAdapter mGameAdapter;
     private GestureDetector mGestureDetector;
 
@@ -28,6 +30,7 @@ public class GameActivity extends Activity {
     private TextView mBestTextView;
     private TextView mGameOverTextView;
 
+    private TextView mValuesTextView;
     private TextView mNerd_2_TextView;
     private TextView mNerd_4_TextView;
     private TextView mNerd_8_TextView;
@@ -42,6 +45,7 @@ public class GameActivity extends Activity {
 
     private int mCurrentScore;
     private int mBestScore;
+    private boolean isNerdMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,27 +53,33 @@ public class GameActivity extends Activity {
         setContentView(R.layout.layout_game);
         setImmersive(true);
 
-        mGameAdapter = new GameAdapter(this);
+        loadMode();
+        if (isNerdMode) {
+            mGameAdapter = new GameAdapter(this, Mode.NERD);
+        } else {
+            mGameAdapter = new GameAdapter(this, Mode.NUMBER);
+        }
         mGestureDetector = createGestureDetector(this);
 
-        mGridView = (GridView) findViewById(R.id.view_grid);
-        mGridView.setAdapter(mGameAdapter);
+        GridView gridView = (GridView) findViewById(R.id.view_grid);
+        gridView.setAdapter(mGameAdapter);
 
         mScoreTextView = (TextView) findViewById(R.id.text_score);
         mBestTextView = (TextView) findViewById(R.id.text_best);
         mGameOverTextView = (TextView) findViewById(R.id.text_gameover);
 
-        mNerd_2_TextView = (TextView) findViewById(R.id.text_nerd_2);
-        mNerd_4_TextView = (TextView) findViewById(R.id.text_nerd_4);
-        mNerd_8_TextView = (TextView) findViewById(R.id.text_nerd_8);
-        mNerd_16_TextView = (TextView) findViewById(R.id.text_nerd_16);
-        mNerd_32_TextView = (TextView) findViewById(R.id.text_nerd_32);
-        mNerd_64_TextView = (TextView) findViewById(R.id.text_nerd_64);
-        mNerd_128_TextView = (TextView) findViewById(R.id.text_nerd_128);
-        mNerd_256_TextView = (TextView) findViewById(R.id.text_nerd_256);
-        mNerd_512_TextView = (TextView) findViewById(R.id.text_nerd_512);
-        mNerd_1024_TextView = (TextView) findViewById(R.id.text_nerd_1024);
-        mNerd_2048_TextView = (TextView) findViewById(R.id.text_nerd_2048);
+        mValuesTextView = (TextView) findViewById(R.id.text_values);
+        mNerd_2_TextView = (TextView) findViewById(R.id.text_number_2);
+        mNerd_4_TextView = (TextView) findViewById(R.id.text_number_4);
+        mNerd_8_TextView = (TextView) findViewById(R.id.text_number_8);
+        mNerd_16_TextView = (TextView) findViewById(R.id.text_number_16);
+        mNerd_32_TextView = (TextView) findViewById(R.id.text_number_32);
+        mNerd_64_TextView = (TextView) findViewById(R.id.text_number_64);
+        mNerd_128_TextView = (TextView) findViewById(R.id.text_number_128);
+        mNerd_256_TextView = (TextView) findViewById(R.id.text_number_256);
+        mNerd_512_TextView = (TextView) findViewById(R.id.text_number_512);
+        mNerd_1024_TextView = (TextView) findViewById(R.id.text_number_1024);
+        mNerd_2048_TextView = (TextView) findViewById(R.id.text_number_2048);
 
         setupNewGame();
     }
@@ -78,6 +88,7 @@ public class GameActivity extends Activity {
     protected void onPause() {
         super.onPause();
         saveBestScore();
+        saveMode();
     }
 
     @Override
@@ -94,7 +105,7 @@ public class GameActivity extends Activity {
                 restart();
                 return true;
             case R.id.menu_mode:
-                mGameAdapter.switchMode();
+                switchMode();
                 return true;
             case R.id.menu_quit:
                 quit();
@@ -106,6 +117,7 @@ public class GameActivity extends Activity {
 
     private void restart() {
         saveBestScore();
+        saveMode();
         setupNewGame();
     }
 
@@ -113,11 +125,52 @@ public class GameActivity extends Activity {
         finish();
     }
 
+    private void switchMode() {
+        isNerdMode = !isNerdMode;
+        if (isNerdMode) {
+            mGameAdapter.setMode(Mode.NERD);
+        } else {
+            mGameAdapter.setMode(Mode.NUMBER);
+        }
+        updateTextViews();
+    }
+
+    private void updateTextViews() {
+        if (isNerdMode == false) {
+            mValuesTextView.setText(R.string.values);
+            mNerd_2_TextView.setText(R.string.number_2);
+            mNerd_4_TextView.setText(R.string.number_4);
+            mNerd_8_TextView.setText(R.string.number_8);
+            mNerd_16_TextView.setText(R.string.number_16);
+            mNerd_32_TextView.setText(R.string.number_32);
+            mNerd_64_TextView.setText(R.string.number_64);
+            mNerd_128_TextView.setText(R.string.number_128);
+            mNerd_256_TextView.setText(R.string.number_256);
+            mNerd_512_TextView.setText(R.string.number_512);
+            mNerd_1024_TextView.setText(R.string.number_1024);
+            mNerd_2048_TextView.setText(R.string.number_2048);
+        } else {
+            mValuesTextView.setText(R.string.nerds);
+            mNerd_2_TextView.setText(R.string.nerd_2);
+            mNerd_4_TextView.setText(R.string.nerd_4);
+            mNerd_8_TextView.setText(R.string.nerd_8);
+            mNerd_16_TextView.setText(R.string.nerd_16);
+            mNerd_32_TextView.setText(R.string.nerd_32);
+            mNerd_64_TextView.setText(R.string.nerd_64);
+            mNerd_128_TextView.setText(R.string.nerd_128);
+            mNerd_256_TextView.setText(R.string.nerd_256);
+            mNerd_512_TextView.setText(R.string.nerd_512);
+            mNerd_1024_TextView.setText(R.string.nerd_1024);
+            mNerd_2048_TextView.setText(R.string.nerd_2048);
+        }
+    }
+
     private void gameover() {
         mGameOverTextView.setVisibility(View.VISIBLE);
     }
 
     private void setupNewGame() {
+        mGameAdapter.setMode(Mode.NUMBER);
         mGameOverTextView.setVisibility(View.INVISIBLE);
 
         mCurrentScore = 0;
@@ -149,17 +202,14 @@ public class GameActivity extends Activity {
     private int getRandomImage() {
         int quartile = random.nextInt(4);
         if (quartile == 0) {
-            return R.drawable.image_4;
+            return mGameAdapter.getDrawable_4();
         } else {
-            return R.drawable.image_2;
+            return mGameAdapter.getDrawable_2();
         }
     }
 
     private boolean isEmpty(int position) {
-        if (mGameAdapter.getItemIdInt(position) == R.drawable.image_none) {
-            return true;
-        }
-        return false;
+        return mGameAdapter.getItemIdInt(position) == mGameAdapter.getDrawable_None();
     }
 
     private void loadBestScore() {
@@ -171,6 +221,17 @@ public class GameActivity extends Activity {
     private void saveBestScore() {
         SharedPreferences prefs = this.getSharedPreferences(KEY, Context.MODE_PRIVATE);
         prefs.edit().putInt(KEY_BEST, mBestScore).commit();
+    }
+
+    private void loadMode() {
+        SharedPreferences prefs = this.getSharedPreferences(KEY, Context.MODE_PRIVATE);
+        String modeKey = KEY_MODE;
+        isNerdMode = prefs.getBoolean(modeKey, false);
+    }
+
+    private void saveMode() {
+        SharedPreferences prefs = this.getSharedPreferences(KEY, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_MODE, isNerdMode).commit();
     }
 
     private GestureDetector createGestureDetector(Context context) {
@@ -278,11 +339,11 @@ public class GameActivity extends Activity {
     }
 
     private boolean canMoveLeft(int position) {
-        if (position % 4 == 0 || mGameAdapter.getItemIdInt(position) == R.drawable.image_none) {
+        if (position % 4 == 0 || mGameAdapter.getItemIdInt(position) == mGameAdapter.getDrawable_None()) {
             return false;
         } else {
             int leftPosition = position - 1;
-            if (mGameAdapter.getItemIdInt(leftPosition) == R.drawable.image_none || mGameAdapter.getItemIdInt(leftPosition) == mGameAdapter.getItemIdInt(position)) {
+            if (mGameAdapter.getItemIdInt(leftPosition) == mGameAdapter.getDrawable_None() || mGameAdapter.getItemIdInt(leftPosition) == mGameAdapter.getItemIdInt(position)) {
                 return true;
             }
             if (canMoveLeft(leftPosition)) {
@@ -293,11 +354,11 @@ public class GameActivity extends Activity {
     }
 
     private boolean canMoveRight(int position) {
-        if (position % 4 == 3 || mGameAdapter.getItemIdInt(position) == R.drawable.image_none) {
+        if (position % 4 == 3 || mGameAdapter.getItemIdInt(position) == mGameAdapter.getDrawable_None()) {
             return false;
         } else {
             int rightPosition = position + 1;
-            if (mGameAdapter.getItemIdInt(rightPosition) == R.drawable.image_none || mGameAdapter.getItemIdInt(rightPosition) == mGameAdapter.getItemIdInt(position)) {
+            if (mGameAdapter.getItemIdInt(rightPosition) == mGameAdapter.getDrawable_None() || mGameAdapter.getItemIdInt(rightPosition) == mGameAdapter.getItemIdInt(position)) {
                 return true;
             }
             if (canMoveRight(rightPosition)) {
@@ -308,11 +369,11 @@ public class GameActivity extends Activity {
     }
 
     private boolean canMoveUp(int position) {
-        if (position <= 3 || mGameAdapter.getItemIdInt(position) == R.drawable.image_none) {
+        if (position <= 3 || mGameAdapter.getItemIdInt(position) == mGameAdapter.getDrawable_None()) {
             return false;
         } else {
             int upPosition = position - 4;
-            if (mGameAdapter.getItemIdInt(upPosition) == R.drawable.image_none || mGameAdapter.getItemIdInt(upPosition) == mGameAdapter.getItemIdInt(position)) {
+            if (mGameAdapter.getItemIdInt(upPosition) == mGameAdapter.getDrawable_None() || mGameAdapter.getItemIdInt(upPosition) == mGameAdapter.getItemIdInt(position)) {
                 return true;
             }
             if (canMoveUp(upPosition)) {
@@ -323,11 +384,11 @@ public class GameActivity extends Activity {
     }
 
     private boolean canMoveDown(int position) {
-        if (position >= 12 || mGameAdapter.getItemIdInt(position) == R.drawable.image_none) {
+        if (position >= 12 || mGameAdapter.getItemIdInt(position) == mGameAdapter.getDrawable_None()) {
             return false;
         } else {
             int downPosition = position + 4;
-            if (mGameAdapter.getItemIdInt(downPosition) == R.drawable.image_none || mGameAdapter.getItemIdInt(downPosition) == mGameAdapter.getItemIdInt(position)) {
+            if (mGameAdapter.getItemIdInt(downPosition) == mGameAdapter.getDrawable_None() || mGameAdapter.getItemIdInt(downPosition) == mGameAdapter.getItemIdInt(position)) {
                 return true;
             }
             if (canMoveDown(downPosition)) {
@@ -354,15 +415,14 @@ public class GameActivity extends Activity {
         }
         int image = mGameAdapter.getItemIdInt(position);
         int leftPosition = position - 1;
-        if (mGameAdapter.getItemIdInt(leftPosition) == R.drawable.image_none) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
+        if (mGameAdapter.getItemIdInt(leftPosition) == mGameAdapter.getDrawable_None()) {
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
             mGameAdapter.setImage(leftPosition, image);
             return moveLeft(leftPosition);
         } else if (mGameAdapter.getItemIdInt(leftPosition) == image) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
-            mGameAdapter.setImage(leftPosition, getNextFromDrawable(image));
-            int points = getNumberFromDrawable(image) * 2;
-            return points;
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
+            mGameAdapter.setImage(leftPosition, mGameAdapter.getNextFromDrawable(image));
+            return mGameAdapter.getNumberFromDrawable(image) * 2;
         }
         return 0;
     }
@@ -384,15 +444,14 @@ public class GameActivity extends Activity {
         }
         int image = mGameAdapter.getItemIdInt(position);
         int rightPosition = position + 1;
-        if (mGameAdapter.getItemIdInt(rightPosition) == R.drawable.image_none) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
+        if (mGameAdapter.getItemIdInt(rightPosition) == mGameAdapter.getDrawable_None()) {
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
             mGameAdapter.setImage(rightPosition, image);
             return moveRight(rightPosition);
         } else if (mGameAdapter.getItemIdInt(rightPosition) == image) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
-            mGameAdapter.setImage(rightPosition, getNextFromDrawable(image));
-            int points = getNumberFromDrawable(image) * 2;
-            return points;
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
+            mGameAdapter.setImage(rightPosition, mGameAdapter.getNextFromDrawable(image));
+            return mGameAdapter.getNumberFromDrawable(image) * 2;
         }
         return 0;
     }
@@ -411,15 +470,14 @@ public class GameActivity extends Activity {
         }
         int image = mGameAdapter.getItemIdInt(position);
         int upPosition = position - 4;
-        if (mGameAdapter.getItemIdInt(upPosition) == R.drawable.image_none) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
+        if (mGameAdapter.getItemIdInt(upPosition) == mGameAdapter.getDrawable_None()) {
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
             mGameAdapter.setImage(upPosition, image);
             return moveUp(upPosition);
         } else if (mGameAdapter.getItemIdInt(upPosition) == image) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
-            mGameAdapter.setImage(upPosition, getNextFromDrawable(image));
-            int points = getNumberFromDrawable(image) * 2;
-            return points;
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
+            mGameAdapter.setImage(upPosition, mGameAdapter.getNextFromDrawable(image));
+            return mGameAdapter.getNumberFromDrawable(image) * 2;
         }
         return 0;
     }
@@ -438,83 +496,16 @@ public class GameActivity extends Activity {
         }
         int image = mGameAdapter.getItemIdInt(position);
         int downPosition = position + 4;
-        if (mGameAdapter.getItemIdInt(downPosition) == R.drawable.image_none) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
+        if (mGameAdapter.getItemIdInt(downPosition) == mGameAdapter.getDrawable_None()) {
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
             mGameAdapter.setImage(downPosition, image);
             return moveDown(downPosition);
         } else if (mGameAdapter.getItemIdInt(downPosition) == image) {
-            mGameAdapter.setImage(position, R.drawable.image_none);
-            mGameAdapter.setImage(downPosition, getNextFromDrawable(image));
-            int points = getNumberFromDrawable(image) * 2;
-            return points;
+            mGameAdapter.setImage(position, mGameAdapter.getDrawable_None());
+            mGameAdapter.setImage(downPosition, mGameAdapter.getNextFromDrawable(image));
+            return mGameAdapter.getNumberFromDrawable(image) * 2;
         }
         return 0;
-    }
-
-    private int getNumberFromDrawable(int drawable) {
-        switch (drawable) {
-            case R.drawable.image_8192:
-                return 8192;
-            case R.drawable.image_4096:
-                return 4096;
-            case R.drawable.image_2048:
-                return 2048;
-            case R.drawable.image_1024:
-                return 1024;
-            case R.drawable.image_512:
-                return 512;
-            case R.drawable.image_256:
-                return 256;
-            case R.drawable.image_128:
-                return 128;
-            case R.drawable.image_64:
-                return 64;
-            case R.drawable.image_32:
-                return 32;
-            case R.drawable.image_16:
-                return 16;
-            case R.drawable.image_8:
-                return 8;
-            case R.drawable.image_4:
-                return 4;
-            case R.drawable.image_2:
-                return 2;
-            default:
-                return 0;
-        }
-    }
-
-    private int getNextFromDrawable(int drawable) {
-        switch (drawable) {
-            case R.drawable.image_8192:
-                return R.drawable.image_8192;
-            case R.drawable.image_4096:
-                return R.drawable.image_8192;
-            case R.drawable.image_2048:
-                return R.drawable.image_4096;
-            case R.drawable.image_1024:
-                return R.drawable.image_2048;
-            case R.drawable.image_512:
-                return R.drawable.image_1024;
-            case R.drawable.image_256:
-                return R.drawable.image_512;
-            case R.drawable.image_128:
-                return R.drawable.image_256;
-            case R.drawable.image_64:
-                return R.drawable.image_128;
-            case R.drawable.image_32:
-                return R.drawable.image_64;
-            case R.drawable.image_16:
-                return R.drawable.image_32;
-            case R.drawable.image_8:
-                return R.drawable.image_16;
-            case R.drawable.image_4:
-                return R.drawable.image_8;
-            case R.drawable.image_2:
-                return R.drawable.image_4;
-            default:
-                return R.drawable.image_none;
-        }
     }
 
     private void clearNerds() {
@@ -533,47 +524,36 @@ public class GameActivity extends Activity {
 
     private void updateNerds() {
         int nerd = getHighestRankingNerd();
-        switch (nerd) {
-            case R.drawable.image_2048:
-                mNerd_2048_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_1024:
-                mNerd_1024_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_512:
-                mNerd_512_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_256:
-                mNerd_256_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_128:
-                mNerd_128_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_64:
-                mNerd_64_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_32:
-                mNerd_32_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_16:
-                mNerd_16_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_8:
-                mNerd_8_TextView.setVisibility(View.VISIBLE);
-                break;
-            case R.drawable.image_4:
-                mNerd_4_TextView.setVisibility(View.VISIBLE);
-            case R.drawable.image_2:
-                mNerd_2_TextView.setVisibility(View.VISIBLE);
-            default:
-                break;
+        if (nerd == mGameAdapter.getDrawable_2048()) {
+            mNerd_2048_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_1024()) {
+            mNerd_1024_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_512()) {
+            mNerd_512_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_256()) {
+            mNerd_256_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_128()) {
+            mNerd_128_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_64()) {
+            mNerd_64_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_32()) {
+            mNerd_32_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_16()) {
+            mNerd_16_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_8()) {
+            mNerd_8_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_4()) {
+            mNerd_4_TextView.setVisibility(View.VISIBLE);
+            mNerd_2_TextView.setVisibility(View.VISIBLE);
+        } else if (nerd == mGameAdapter.getDrawable_2()) {
+            mNerd_2_TextView.setVisibility(View.VISIBLE);
         }
     }
 
     private int getHighestRankingNerd() {
-        int nerd = R.drawable.image_none;
+        int nerd = mGameAdapter.getDrawable_None();
         for (int i = 0; i < mGameAdapter.getCount(); i++) {
-            nerd = getBiggerNerd(nerd, (int) mGameAdapter.getItemIdInt(i));
+            nerd = getBiggerNerd(nerd, mGameAdapter.getItemIdInt(i));
         }
         return nerd;
     }
@@ -582,69 +562,69 @@ public class GameActivity extends Activity {
         if (nerd1 == nerd2) {
             return nerd1;
         }
-        if (nerd1 == R.drawable.image_8192) {
+        if (nerd1 == mGameAdapter.getDrawable_8192()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_8192) {
+        } else if (nerd2 == mGameAdapter.getDrawable_8192()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_4096) {
+        if (nerd1 == mGameAdapter.getDrawable_4096()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_4096) {
+        } else if (nerd2 == mGameAdapter.getDrawable_4096()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_2048) {
+        if (nerd1 == mGameAdapter.getDrawable_2048()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_2048) {
+        } else if (nerd2 == mGameAdapter.getDrawable_2048()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_1024) {
+        if (nerd1 == mGameAdapter.getDrawable_1024()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_1024) {
+        } else if (nerd2 == mGameAdapter.getDrawable_1024()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_512) {
+        if (nerd1 == mGameAdapter.getDrawable_512()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_512) {
+        } else if (nerd2 == mGameAdapter.getDrawable_512()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_256) {
+        if (nerd1 == mGameAdapter.getDrawable_256()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_256) {
+        } else if (nerd2 == mGameAdapter.getDrawable_256()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_128) {
+        if (nerd1 == mGameAdapter.getDrawable_128()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_128) {
+        } else if (nerd2 == mGameAdapter.getDrawable_128()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_64) {
+        if (nerd1 == mGameAdapter.getDrawable_64()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_64) {
+        } else if (nerd2 == mGameAdapter.getDrawable_64()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_32) {
+        if (nerd1 == mGameAdapter.getDrawable_32()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_32) {
+        } else if (nerd2 == mGameAdapter.getDrawable_32()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_16) {
+        if (nerd1 == mGameAdapter.getDrawable_16()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_16) {
+        } else if (nerd2 == mGameAdapter.getDrawable_16()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_8) {
+        if (nerd1 == mGameAdapter.getDrawable_8()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_8) {
+        } else if (nerd2 == mGameAdapter.getDrawable_8()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_4) {
+        if (nerd1 == mGameAdapter.getDrawable_4()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_4) {
+        } else if (nerd2 == mGameAdapter.getDrawable_4()) {
             return nerd2;
         }
-        if (nerd1 == R.drawable.image_2) {
+        if (nerd1 == mGameAdapter.getDrawable_2()) {
             return nerd1;
-        } else if (nerd2 == R.drawable.image_2) {
+        } else if (nerd2 == mGameAdapter.getDrawable_2()) {
             return nerd2;
         }
         return nerd1;
@@ -661,10 +641,7 @@ public class GameActivity extends Activity {
 
     @Override
     public boolean onGenericMotionEvent(MotionEvent event) {
-        if (mGestureDetector != null) {
-            return mGestureDetector.onMotionEvent(event);
-        }
-        return false;
+        return mGestureDetector != null && mGestureDetector.onMotionEvent(event);
     }
 
 }

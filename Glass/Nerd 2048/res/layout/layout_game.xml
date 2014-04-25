@@ -90,10 +90,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_nerds"
+            android:id="@+id/text_values"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nerds"
+            android:text="@string/values"
             android:textColor="@color/white"
             android:textSize="30px"
             android:paddingTop="5px"
@@ -106,68 +106,68 @@
             android:layout_margin="@dimen/margin_divider" />
 
         <TextView
-            android:id="@+id/text_nerd_2"
-            android:text="@string/nerd_2"
+            android:id="@+id/text_number_2"
+            android:text="@string/number_2"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_4"
-            android:text="@string/nerd_4"
+            android:id="@+id/text_number_4"
+            android:text="@string/number_4"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_8"
-            android:text="@string/nerd_8"
+            android:id="@+id/text_number_8"
+            android:text="@string/number_8"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_16"
-            android:text="@string/nerd_16"
+            android:id="@+id/text_number_16"
+            android:text="@string/number_16"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_32"
-            android:text="@string/nerd_32"
+            android:id="@+id/text_number_32"
+            android:text="@string/number_32"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_64"
-            android:text="@string/nerd_64"
+            android:id="@+id/text_number_64"
+            android:text="@string/number_64"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_128"
-            android:text="@string/nerd_128"
+            android:id="@+id/text_number_128"
+            android:text="@string/number_128"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_256"
-            android:text="@string/nerd_256"
+            android:id="@+id/text_number_256"
+            android:text="@string/number_256"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_512"
-            android:text="@string/nerd_512"
+            android:id="@+id/text_number_512"
+            android:text="@string/number_512"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_1024"
-            android:text="@string/nerd_1024"
+            android:id="@+id/text_number_1024"
+            android:text="@string/number_1024"
             style="@style/text_nerds"
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/text_nerd_2048"
-            android:text="@string/nerd_2048"
+            android:id="@+id/text_number_2048"
+            android:text="@string/number_2048"
             style="@style/text_nerds"
             android:visibility="invisible" />
 

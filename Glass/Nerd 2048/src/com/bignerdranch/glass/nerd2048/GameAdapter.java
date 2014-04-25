@@ -45,8 +45,12 @@ public class GameAdapter extends BaseAdapter {
     }
 
     public GameAdapter(Context c) {
+        this(c, Mode.NUMBER);
+    }
+
+    public GameAdapter(Context c, Mode mode) {
         mContext = c;
-        mMode = Mode.NUMBER;
+        mMode = mode;
     }
 
     @Override
@@ -68,7 +72,7 @@ public class GameAdapter extends BaseAdapter {
         return ((int) getItemId(position));
     }
 
-    private enum Mode {
+    public enum Mode {
         NUMBER,
         NERD
     }
@@ -77,14 +81,112 @@ public class GameAdapter extends BaseAdapter {
         return mMode;
     }
 
-    public void switchMode() {
+    public int getDrawable_None() {
         if (mMode == Mode.NUMBER) {
-            mMode = Mode.NERD;
-            convertToNerdMode();
-        } else {
-            mMode = Mode.NUMBER;
-            convertToNumberMode();
+            return R.drawable.image_none;
         }
+        return R.drawable.image_none_nerd;
+    }
+
+    public int getDrawable_2() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_2;
+        }
+        return R.drawable.image_2_nerd;
+    }
+
+    public int getDrawable_4() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_4;
+        }
+        return R.drawable.image_4_nerd;
+    }
+
+    public int getDrawable_8() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_8;
+        }
+        return R.drawable.image_8_nerd;
+    }
+
+    public int getDrawable_16() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_16;
+        }
+        return R.drawable.image_16_nerd;
+    }
+
+    public int getDrawable_32() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_32;
+        }
+        return R.drawable.image_32_nerd;
+    }
+
+    public int getDrawable_64() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_64;
+        }
+        return R.drawable.image_64_nerd;
+    }
+
+    public int getDrawable_128() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_128;
+        }
+        return R.drawable.image_128_nerd;
+    }
+
+    public int getDrawable_256() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_256;
+        }
+        return R.drawable.image_256_nerd;
+    }
+
+    public int getDrawable_512() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_512;
+        }
+        return R.drawable.image_512_nerd;
+    }
+
+    public int getDrawable_1024() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_1024;
+        }
+        return R.drawable.image_1024_nerd;
+    }
+
+    public int getDrawable_2048() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_2048;
+        }
+        return R.drawable.image_2048_nerd;
+    }
+
+    public int getDrawable_4096() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_4096;
+        }
+        return R.drawable.image_4096_nerd;
+    }
+
+    public int getDrawable_8192() {
+        if (mMode == Mode.NUMBER) {
+            return R.drawable.image_8192;
+        }
+        return R.drawable.image_8192_nerd;
+    }
+
+    public void setMode(Mode mode) {
+        mMode = mode;
+        if (mMode == Mode.NUMBER) {
+            convertToNumberMode();
+        } else {
+            convertToNerdMode();
+        }
+        notifyDataSetChanged();
     }
 
     private void convertToNerdMode() {
@@ -131,7 +233,7 @@ public class GameAdapter extends BaseAdapter {
                     mImageArray[i] = R.drawable.image_2_nerd;
                     break;
                 default:
-                    mImageArray[i] = R.drawable.image_none;
+                    mImageArray[i] = R.drawable.image_none_nerd;
                     break;
             }
         }
@@ -141,49 +243,197 @@ public class GameAdapter extends BaseAdapter {
         for (int i = 0; i < mImageArray.length; i++) {
             int drawable = getItemIdInt(i);
             switch (drawable) {
-                case R.drawable.image_8192:
+                case R.drawable.image_8192_nerd:
                     mImageArray[i] = R.drawable.image_8192;
                     break;
-                case R.drawable.image_4096:
+                case R.drawable.image_4096_nerd:
                     mImageArray[i] = R.drawable.image_4096;
                     break;
-                case R.drawable.image_2048:
+                case R.drawable.image_2048_nerd:
                     mImageArray[i] = R.drawable.image_2048;
                     break;
-                case R.drawable.image_1024:
+                case R.drawable.image_1024_nerd:
                     mImageArray[i] = R.drawable.image_1024;
                     break;
-                case R.drawable.image_512:
+                case R.drawable.image_512_nerd:
                     mImageArray[i] = R.drawable.image_512;
                     break;
-                case R.drawable.image_256:
+                case R.drawable.image_256_nerd:
                     mImageArray[i] = R.drawable.image_256;
                     break;
-                case R.drawable.image_128:
+                case R.drawable.image_128_nerd:
                     mImageArray[i] = R.drawable.image_128;
                     break;
-                case R.drawable.image_64:
+                case R.drawable.image_64_nerd:
                     mImageArray[i] = R.drawable.image_64;
                     break;
-                case R.drawable.image_32:
+                case R.drawable.image_32_nerd:
                     mImageArray[i] = R.drawable.image_32;
                     break;
-                case R.drawable.image_16:
+                case R.drawable.image_16_nerd:
                     mImageArray[i] = R.drawable.image_16;
                     break;
-                case R.drawable.image_8:
+                case R.drawable.image_8_nerd:
                     mImageArray[i] = R.drawable.image_8;
                     break;
-                case R.drawable.image_4:
+                case R.drawable.image_4_nerd:
                     mImageArray[i] = R.drawable.image_4;
                     break;
-                case R.drawable.image_2:
+                case R.drawable.image_2_nerd:
                     mImageArray[i] = R.drawable.image_2;
                     break;
                 default:
                     mImageArray[i] = R.drawable.image_none;
                     break;
             }
+        }
+    }
+
+    public int getNumberFromDrawable(int drawable) {
+        if (mMode == Mode.NUMBER) {
+            return getNumberFromDrawable_Number(drawable);
+        } else {
+            return getNumberFromDrawable_Nerd(drawable);
+        }
+    }
+
+    private int getNumberFromDrawable_Number(int drawable) {
+        switch (drawable) {
+            case R.drawable.image_8192:
+                return 8192;
+            case R.drawable.image_4096:
+                return 4096;
+            case R.drawable.image_2048:
+                return 2048;
+            case R.drawable.image_1024:
+                return 1024;
+            case R.drawable.image_512:
+                return 512;
+            case R.drawable.image_256:
+                return 256;
+            case R.drawable.image_128:
+                return 128;
+            case R.drawable.image_64:
+                return 64;
+            case R.drawable.image_32:
+                return 32;
+            case R.drawable.image_16:
+                return 16;
+            case R.drawable.image_8:
+                return 8;
+            case R.drawable.image_4:
+                return 4;
+            case R.drawable.image_2:
+                return 2;
+            default:
+                return 0;
+        }
+    }
+
+    private int getNumberFromDrawable_Nerd(int drawable) {
+        switch (drawable) {
+            case R.drawable.image_8192_nerd:
+                return 8192;
+            case R.drawable.image_4096_nerd:
+                return 4096;
+            case R.drawable.image_2048_nerd:
+                return 2048;
+            case R.drawable.image_1024_nerd:
+                return 1024;
+            case R.drawable.image_512_nerd:
+                return 512;
+            case R.drawable.image_256_nerd:
+                return 256;
+            case R.drawable.image_128_nerd:
+                return 128;
+            case R.drawable.image_64_nerd:
+                return 64;
+            case R.drawable.image_32_nerd:
+                return 32;
+            case R.drawable.image_16_nerd:
+                return 16;
+            case R.drawable.image_8_nerd:
+                return 8;
+            case R.drawable.image_4_nerd:
+                return 4;
+            case R.drawable.image_2_nerd:
+                return 2;
+            default:
+                return 0;
+        }
+    }
+
+    public int getNextFromDrawable(int drawable) {
+        if (mMode == Mode.NUMBER) {
+            return getNextFromDrawable_Number(drawable);
+        } else {
+            return getNextFromDrawable_Nerd(drawable);
+        }
+    }
+
+    private int getNextFromDrawable_Number(int drawable) {
+        switch (drawable) {
+            case R.drawable.image_8192:
+                return R.drawable.image_8192;
+            case R.drawable.image_4096:
+                return R.drawable.image_8192;
+            case R.drawable.image_2048:
+                return R.drawable.image_4096;
+            case R.drawable.image_1024:
+                return R.drawable.image_2048;
+            case R.drawable.image_512:
+                return R.drawable.image_1024;
+            case R.drawable.image_256:
+                return R.drawable.image_512;
+            case R.drawable.image_128:
+                return R.drawable.image_256;
+            case R.drawable.image_64:
+                return R.drawable.image_128;
+            case R.drawable.image_32:
+                return R.drawable.image_64;
+            case R.drawable.image_16:
+                return R.drawable.image_32;
+            case R.drawable.image_8:
+                return R.drawable.image_16;
+            case R.drawable.image_4:
+                return R.drawable.image_8;
+            case R.drawable.image_2:
+                return R.drawable.image_4;
+            default:
+                return R.drawable.image_none;
+        }
+    }
+
+    private int getNextFromDrawable_Nerd(int drawable) {
+        switch (drawable) {
+            case R.drawable.image_8192_nerd:
+                return R.drawable.image_8192_nerd;
+            case R.drawable.image_4096_nerd:
+                return R.drawable.image_8192_nerd;
+            case R.drawable.image_2048_nerd:
+                return R.drawable.image_4096_nerd;
+            case R.drawable.image_1024_nerd:
+                return R.drawable.image_2048_nerd;
+            case R.drawable.image_512_nerd:
+                return R.drawable.image_1024_nerd;
+            case R.drawable.image_256_nerd:
+                return R.drawable.image_512_nerd;
+            case R.drawable.image_128_nerd:
+                return R.drawable.image_256_nerd;
+            case R.drawable.image_64_nerd:
+                return R.drawable.image_128_nerd;
+            case R.drawable.image_32_nerd:
+                return R.drawable.image_64_nerd;
+            case R.drawable.image_16_nerd:
+                return R.drawable.image_32_nerd;
+            case R.drawable.image_8_nerd:
+                return R.drawable.image_16_nerd;
+            case R.drawable.image_4_nerd:
+                return R.drawable.image_8_nerd;
+            case R.drawable.image_2_nerd:
+                return R.drawable.image_4_nerd;
+            default:
+                return R.drawable.image_none_nerd;
         }
     }
 
