@@ -198,7 +198,8 @@ public class CollaborativeFragment extends Fragment {
 
 			String username = mUserName.getText().toString();
 			username = TextUtils.isEmpty(username) ? DEFAULT_USERNAME : username;
-			mChannel.trigger(EVENT_NAME, "{ \"" + mMove + "\" : \"" + username + "\" }");
+			String event = String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", mMove, username);
+			mChannel.trigger(EVENT_NAME, event);
 
 			updateUI();
 			return false;
