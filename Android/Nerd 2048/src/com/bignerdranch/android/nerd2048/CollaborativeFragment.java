@@ -2,16 +2,21 @@ package com.bignerdranch.android.nerd2048;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
-import com.emorym.android_pusher.Pusher;
-import com.emorym.android_pusher.PusherCallback;
-import org.json.JSONObject;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.PrivateChannel;
+import com.pusher.client.channel.PrivateChannelEventListener;
+import com.pusher.client.connection.ConnectionEventListener;
+import com.pusher.client.connection.ConnectionState;
+import com.pusher.client.connection.ConnectionStateChange;
+import com.pusher.client.util.HttpAuthorizer;
 
 public class CollaborativeFragment extends Fragment {
 
@@ -27,9 +32,10 @@ public class CollaborativeFragment extends Fragment {
 		none, up, down, left, right;
 	}
 
-	private Pusher mPusher;
 	private GestureDetector mDetector;
 	private Move mMove;
+	private Pusher mPusher;
+	private PrivateChannel mChannel;
 
 	private EditText mUserName;
 	private ImageView mArrow;
@@ -38,15 +44,45 @@ public class CollaborativeFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
 		mMove = Move.none;
-		mPusher = new Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET);
-		mPusher.bindAll(new PusherCallback() {
+
+		HttpAuthorizer authorizer = new HttpAuthorizer("http://mysterious-forest-1989.herokuapp.com/pusher/auth");
+		PusherOptions options = new PusherOptions().setAuthorizer(authorizer);
+		mPusher = new Pusher(PUSHER_APP_KEY, options);
+
+		mPusher.connect(new ConnectionEventListener() {
 			@Override
-			public void onEvent(String eventName, JSONObject eventData, String channelName) {
-				Log.d(TAG, "Received " + eventData.toString() + " for event '" + eventName + "' on channel '" + channelName + "'.");
+			public void onConnectionStateChange(ConnectionStateChange change) {
+				Log.d(TAG, "State changed to " + change.getCurrentState() +
+						" from " + change.getPreviousState());
 			}
-		});
-		new PusherInitTask().execute();
+
+			@Override
+			public void onError(String message, String code, Exception e) {
+				Log.d(TAG, "There was a problem connecting!");
+			}
+		}, ConnectionState.ALL);
+
+		mChannel = mPusher.subscribePrivate(PRIVATE_CHANNEL,
+				new PrivateChannelEventListener() {
+					@Override
+					public void onAuthenticationFailure(String message, Exception e) {
+						Log.d(TAG, String.format("Authentication failure due to [%s], exception was [%s]", message, e));
+					}
+
+					@Override
+					public void onSubscriptionSucceeded(String channelName) {
+
+					}
+
+					@Override
+					public void onEvent(String channelName, String eventName, String data) {
+						Log.d(TAG, "Received event: " + eventName + " with data: " + data);
+					}
+				});
 	}
 
 	@Override
@@ -98,17 +134,6 @@ public class CollaborativeFragment extends Fragment {
 		}
 	}
 
-	private void sendEvent() {
-		try {
-			String username = mUserName.getText().toString();
-			username = TextUtils.isEmpty(username) ? DEFAULT_USERNAME : username;
-			JSONObject eventData = new JSONObject("{ \"" + mMove + "\" : \"" + username + "\" }");
-			mPusher.sendEvent(EVENT_NAME, eventData, PRIVATE_CHANNEL);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	private GestureDetector.OnGestureListener mOnGestureListener = new GestureDetector.OnGestureListener() {
 		@Override
 		public boolean onDown(MotionEvent e) {
@@ -156,41 +181,12 @@ public class CollaborativeFragment extends Fragment {
 				}
 			}
 
-			new SendEventTask().execute();
+			String username = mUserName.getText().toString();
+			username = TextUtils.isEmpty(username) ? DEFAULT_USERNAME : username;
+			mChannel.trigger(EVENT_NAME, "{ \"" + mMove + "\" : \"" + username + "\" }");
 
 			updateUI();
 			return false;
 		}
 	};
-
-	private class PusherInitTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			mPusher.connect();
-			mPusher.subscribe(PRIVATE_CHANNEL);
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			Log.d(TAG, "Subscribed.");
-			super.onPostExecute(aVoid);
-		}
-	}
-
-	private class SendEventTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			sendEvent();
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			Log.d(TAG, "Sent event.");
-			super.onPostExecute(aVoid);
-		}
-	}
 }
