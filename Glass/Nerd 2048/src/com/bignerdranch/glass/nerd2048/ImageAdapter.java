@@ -1,6 +1,7 @@
 package com.bignerdranch.glass.nerd2048;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,6 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-
         imageView.setImageResource(mImageArray[position]);
         return imageView;
     }
@@ -32,34 +32,54 @@ public class ImageAdapter extends BaseAdapter {
         mContext = c;
     }
 
+    public void actionLeft() {
+        Log.i("ImageAdapter", "left");
+    }
+
+    public void actionRight() {
+        Log.i("ImageAdapter", "right");
+    }
+
+    public void actionUp() {
+        Log.i("ImageAdapter", "up");
+    }
+
+    public void actionDown() {
+        Log.i("ImageAdapter", "down");
+    }
+
+    @Override
     public int getCount() {
         return mImageArray.length;
     }
 
-    public Object getItem(int position) {
+    @Override
+    public ImageView getItem(int position) {
         return null;
     }
 
+    @Override
     public long getItemId(int position) {
-        return 0;
+        return mImageArray[position];
     }
 
     private Integer[] mImageArray = {
-            R.drawable.image_2,
-            R.drawable.image_4,
-            R.drawable.image_8,
-            R.drawable.image_16,
-            R.drawable.image_32,
-            R.drawable.image_64,
-            R.drawable.image_128,
-            R.drawable.image_256,
-            R.drawable.image_512,
-            R.drawable.image_1024,
-            R.drawable.image_2048,
-            R.drawable.image_4096,
-            R.drawable.image_8192,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
+            R.drawable.image_none,
             R.drawable.image_none,
             R.drawable.image_none,
             R.drawable.image_none
     };
+
 }
