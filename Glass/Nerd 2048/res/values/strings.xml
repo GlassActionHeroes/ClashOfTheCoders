@@ -6,6 +6,7 @@
     <string name="menu_restart">Restart</string>
     <string name="menu_quit">Quit</string>
 
+    <string name="gameover">Game\nOver</string>
     <string name="score_text">Score:</string>
     <string name="best_text">Best:</string>
     <string name="score">%1$d</string>

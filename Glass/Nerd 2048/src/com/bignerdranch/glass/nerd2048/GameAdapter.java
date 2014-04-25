@@ -62,6 +62,11 @@ public class GameAdapter extends BaseAdapter {
         return mImageArray[position];
     }
 
+    public int getItemIdInt(int position) {
+        return ((int) getItemId(position));
+    }
+
+
     private int[] mImageArray = {
             R.drawable.image_none,
             R.drawable.image_none,

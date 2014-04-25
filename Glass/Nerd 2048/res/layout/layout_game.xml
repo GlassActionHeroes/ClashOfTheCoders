@@ -14,6 +14,12 @@
         android:layout_alignParentTop="true"
         android:gravity="center">
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="@color/white"
+            android:layout_margin="10px" />
+
         <TextView
             android:text="@string/score_text"
             style="@style/text_scores" />
@@ -37,6 +43,27 @@
             android:id="@+id/text_best"
             android:text="@string/best"
             style="@style/text_scores" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="@color/white"
+            android:layout_margin="10px" />
+
+        <TextView
+            android:id="@+id/text_gameover"
+            android:text="@string/gameover"
+            style="@style/text_scores"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="@color/white"
+            android:layout_margin="10px" />
 
     </LinearLayout>
 
@@ -81,57 +108,68 @@
         <TextView
             android:id="@+id/text_nerd_2"
             android:text="@string/nerd_2"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_4"
             android:text="@string/nerd_4"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_8"
             android:text="@string/nerd_8"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_16"
             android:text="@string/nerd_16"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_32"
             android:text="@string/nerd_32"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_64"
             android:text="@string/nerd_64"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_128"
             android:text="@string/nerd_128"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_256"
             android:text="@string/nerd_256"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_512"
             android:text="@string/nerd_512"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_1024"
             android:text="@string/nerd_1024"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/text_nerd_2048"
             android:text="@string/nerd_2048"
-            style="@style/text_nerds" />
+            style="@style/text_nerds"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
