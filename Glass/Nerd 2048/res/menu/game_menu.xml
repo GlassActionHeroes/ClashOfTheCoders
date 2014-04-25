@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_menu_restart" />
 
     <item
+        android:id="@+id/menu_mode"
+        android:title="@string/menu_mode"
+        android:icon="@drawable/ic_menu_mode" />
+
+    <item
         android:id="@+id/menu_quit"
         android:title="@string/menu_quit"
         android:icon="@drawable/ic_menu_quit" />

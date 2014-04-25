@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 public class GameAdapter extends BaseAdapter {
 
+    private Mode mMode;
     private Context mContext;
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -45,6 +46,7 @@ public class GameAdapter extends BaseAdapter {
 
     public GameAdapter(Context c) {
         mContext = c;
+        mMode = Mode.NUMBER;
     }
 
     @Override
@@ -66,6 +68,124 @@ public class GameAdapter extends BaseAdapter {
         return ((int) getItemId(position));
     }
 
+    private enum Mode {
+        NUMBER,
+        NERD
+    }
+
+    public Mode getMode() {
+        return mMode;
+    }
+
+    public void switchMode() {
+        if (mMode == Mode.NUMBER) {
+            mMode = Mode.NERD;
+            convertToNerdMode();
+        } else {
+            mMode = Mode.NUMBER;
+            convertToNumberMode();
+        }
+    }
+
+    private void convertToNerdMode() {
+        for (int i = 0; i < mImageArray.length; i++) {
+            int drawable = getItemIdInt(i);
+            switch (drawable) {
+                case R.drawable.image_8192:
+                    mImageArray[i] = R.drawable.image_8192_nerd;
+                    break;
+                case R.drawable.image_4096:
+                    mImageArray[i] = R.drawable.image_4096_nerd;
+                    break;
+                case R.drawable.image_2048:
+                    mImageArray[i] = R.drawable.image_2048_nerd;
+                    break;
+                case R.drawable.image_1024:
+                    mImageArray[i] = R.drawable.image_1024_nerd;
+                    break;
+                case R.drawable.image_512:
+                    mImageArray[i] = R.drawable.image_512_nerd;
+                    break;
+                case R.drawable.image_256:
+                    mImageArray[i] = R.drawable.image_256_nerd;
+                    break;
+                case R.drawable.image_128:
+                    mImageArray[i] = R.drawable.image_128_nerd;
+                    break;
+                case R.drawable.image_64:
+                    mImageArray[i] = R.drawable.image_64_nerd;
+                    break;
+                case R.drawable.image_32:
+                    mImageArray[i] = R.drawable.image_32_nerd;
+                    break;
+                case R.drawable.image_16:
+                    mImageArray[i] = R.drawable.image_16_nerd;
+                    break;
+                case R.drawable.image_8:
+                    mImageArray[i] = R.drawable.image_8_nerd;
+                    break;
+                case R.drawable.image_4:
+                    mImageArray[i] = R.drawable.image_4_nerd;
+                    break;
+                case R.drawable.image_2:
+                    mImageArray[i] = R.drawable.image_2_nerd;
+                    break;
+                default:
+                    mImageArray[i] = R.drawable.image_none;
+                    break;
+            }
+        }
+    }
+
+    private void convertToNumberMode() {
+        for (int i = 0; i < mImageArray.length; i++) {
+            int drawable = getItemIdInt(i);
+            switch (drawable) {
+                case R.drawable.image_8192:
+                    mImageArray[i] = R.drawable.image_8192;
+                    break;
+                case R.drawable.image_4096:
+                    mImageArray[i] = R.drawable.image_4096;
+                    break;
+                case R.drawable.image_2048:
+                    mImageArray[i] = R.drawable.image_2048;
+                    break;
+                case R.drawable.image_1024:
+                    mImageArray[i] = R.drawable.image_1024;
+                    break;
+                case R.drawable.image_512:
+                    mImageArray[i] = R.drawable.image_512;
+                    break;
+                case R.drawable.image_256:
+                    mImageArray[i] = R.drawable.image_256;
+                    break;
+                case R.drawable.image_128:
+                    mImageArray[i] = R.drawable.image_128;
+                    break;
+                case R.drawable.image_64:
+                    mImageArray[i] = R.drawable.image_64;
+                    break;
+                case R.drawable.image_32:
+                    mImageArray[i] = R.drawable.image_32;
+                    break;
+                case R.drawable.image_16:
+                    mImageArray[i] = R.drawable.image_16;
+                    break;
+                case R.drawable.image_8:
+                    mImageArray[i] = R.drawable.image_8;
+                    break;
+                case R.drawable.image_4:
+                    mImageArray[i] = R.drawable.image_4;
+                    break;
+                case R.drawable.image_2:
+                    mImageArray[i] = R.drawable.image_2;
+                    break;
+                default:
+                    mImageArray[i] = R.drawable.image_none;
+                    break;
+            }
+        }
+    }
 
     private int[] mImageArray = {
             R.drawable.image_none,

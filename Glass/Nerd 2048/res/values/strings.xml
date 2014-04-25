@@ -4,6 +4,7 @@
     <string name="app_name">Nerd 2048</string>
     <string name="voice_trigger">Play 2048</string>
     <string name="menu_restart">Restart</string>
+    <string name="menu_mode">Switch Mode</string>
     <string name="menu_quit">Quit</string>
 
     <string name="gameover">Game\nOver</string>

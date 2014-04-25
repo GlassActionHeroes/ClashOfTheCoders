@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -94,6 +93,9 @@ public class GameActivity extends Activity {
             case R.id.menu_restart:
                 restart();
                 return true;
+            case R.id.menu_mode:
+                mGameAdapter.switchMode();
+                return true;
             case R.id.menu_quit:
                 quit();
                 return true;
@@ -177,6 +179,9 @@ public class GameActivity extends Activity {
             @Override
             public boolean onGesture(Gesture gesture) {
                 if (gesture == Gesture.SWIPE_DOWN) {
+                    if (mGameOverTextView.getVisibility() == View.VISIBLE) {
+                        quit();
+                    }
                     if (isDownValid()) {
                         actionDown();
                     }
