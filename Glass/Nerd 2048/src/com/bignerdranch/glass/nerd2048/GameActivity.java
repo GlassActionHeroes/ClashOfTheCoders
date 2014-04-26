@@ -49,6 +49,8 @@ public class GameActivity extends Activity {
     private TextView mGameOverTextView;
 
     private TextView mValuesTextView;
+    private TextView mActionsTextView;
+
     private TextView mNerd_2_TextView;
     private TextView mNerd_4_TextView;
     private TextView mNerd_8_TextView;
@@ -91,6 +93,8 @@ public class GameActivity extends Activity {
         mGameOverTextView = (TextView) findViewById(R.id.text_gameover);
 
         mValuesTextView = (TextView) findViewById(R.id.text_values);
+        mActionsTextView = (TextView) findViewById(R.id.text_actions);
+
         mNerd_2_TextView = (TextView) findViewById(R.id.text_number_2);
         mNerd_4_TextView = (TextView) findViewById(R.id.text_number_4);
         mNerd_8_TextView = (TextView) findViewById(R.id.text_number_8);
@@ -130,18 +134,21 @@ public class GameActivity extends Activity {
             case R.id.menu_mode:
                 switchMode();
                 return true;
-            case R.id.menu_quit:
-                quit();
-                return true;
             case R.id.menu_network:
                 if (!isNetworkGame) {
                     isNetworkGame = true;
                     mGameAdapter.clearImages();
                     MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
                     networkMenuItem.setTitle(R.string.menu_network_disable);
+                    clearNerds();
+                    mValuesTextView.setText(R.string.network);
+                    mActionsTextView.setVisibility(View.VISIBLE);
                 } else {
                     restart();
                 }
+                return true;
+            case R.id.menu_quit:
+                quit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -216,6 +223,7 @@ public class GameActivity extends Activity {
         isNetworkGame = false;
         MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
         networkMenuItem.setTitle(R.string.menu_network_enable);
+        mActionsTextView.setVisibility(View.GONE);
     }
 
     private void quit() {
@@ -270,6 +278,8 @@ public class GameActivity extends Activity {
     private void setupNewGame() {
         if (isNerdMode) {
             switchMode();
+        } else {
+            updateTextViews();
         }
 
         mGameOverTextView.setVisibility(View.INVISIBLE);
@@ -346,24 +356,28 @@ public class GameActivity extends Activity {
                     }
                     if (isNetworkGame) {
                         mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
+                        networkActionDown();
                     } else if (isDownValid()) {
                         actionDown();
                     }
                 } else if (gesture == Gesture.SWIPE_UP) {
                     if (isNetworkGame) {
                         mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
+                        networkActionUp();
                     } else if (isUpValid()) {
                         actionUp();
                     }
                 } else if (gesture == Gesture.SWIPE_RIGHT) {
                     if (isNetworkGame) {
                         mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
+                        networkActionRight();
                     } else if (isRightValid()) {
                         actionRight();
                     }
                 } else if (gesture == Gesture.SWIPE_LEFT) {
                     if (isNetworkGame) {
                         mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
+                        networkActionLeft();
                     } else if (isLeftValid()) {
                         actionLeft();
                     }
@@ -396,6 +410,22 @@ public class GameActivity extends Activity {
     private void actionDown() {
         int points = moveDown();
         endTurn(points);
+    }
+
+    private void networkActionLeft() {
+        mActionsTextView.setText(mActionsTextView.getText().toString() + "Left\n");
+    }
+
+    private void networkActionRight() {
+        mActionsTextView.setText(mActionsTextView.getText().toString() + "Right\n");
+    }
+
+    private void networkActionUp() {
+        mActionsTextView.setText(mActionsTextView.getText().toString() + "Up\n");
+    }
+
+    private void networkActionDown() {
+        mActionsTextView.setText(mActionsTextView.getText().toString() + "Down\n");
     }
 
     private void endTurn(int scoreUpdate) {

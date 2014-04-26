@@ -15,6 +15,9 @@
     <string name="score">%1$d</string>
     <string name="best">%1$d</string>
 
+    <string name="network">Network\nActions:</string>
+    <string name="empty"></string>
+
     <string name="values">Values:</string>
     <string name="number_2">2</string>
     <string name="number_4">4</string>

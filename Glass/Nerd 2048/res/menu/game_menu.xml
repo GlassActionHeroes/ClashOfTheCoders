@@ -12,13 +12,13 @@
         android:icon="@drawable/ic_menu_mode" />
 
     <item
-        android:id="@+id/menu_quit"
-        android:title="@string/menu_quit"
-        android:icon="@drawable/ic_menu_quit" />
-
-    <item
         android:id="@+id/menu_network"
         android:title="@string/menu_network_enable"
         android:icon="@drawable/ic_menu_network" />
+
+    <item
+        android:id="@+id/menu_quit"
+        android:title="@string/menu_quit"
+        android:icon="@drawable/ic_menu_quit" />
 
 </menu>
