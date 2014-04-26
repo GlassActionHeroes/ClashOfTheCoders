@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import android.widget.GridView;
@@ -34,10 +33,12 @@ public class GameActivity extends Activity {
     private static final String PUSHER_APP_KEY = "514e04bbf50ba9b0b0b6";
     private static final String PRIVATE_CHANNEL = "private-bnr_2048_channel";
     private static final String EVENT_NAME = "client-send_direction";
+    private static final String USERNAME = "Google Glass";
 
     private Pusher mPusher;
     private PrivateChannel mChannel;
 
+    private Menu mMenu;
     private Random random = new Random();
 
     private GameAdapter mGameAdapter;
@@ -63,12 +64,14 @@ public class GameActivity extends Activity {
     private int mCurrentScore;
     private int mBestScore;
     private boolean isNerdMode;
+    private boolean isNetworkGame;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_game);
         setImmersive(true);
+        isNetworkGame = false;
 
         setupConnection();
 
@@ -114,6 +117,7 @@ public class GameActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -128,6 +132,16 @@ public class GameActivity extends Activity {
                 return true;
             case R.id.menu_quit:
                 quit();
+                return true;
+            case R.id.menu_network:
+                if (!isNetworkGame) {
+                    isNetworkGame = true;
+                    mGameAdapter.clearImages();
+                    MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
+                    networkMenuItem.setTitle(R.string.menu_network_disable);
+                } else {
+                    restart();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -192,9 +206,16 @@ public class GameActivity extends Activity {
     }
 
     private void restart() {
+        disableNetwork();
         saveBestScore();
         saveMode();
         setupNewGame();
+    }
+
+    private void disableNetwork() {
+        isNetworkGame = false;
+        MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
+        networkMenuItem.setTitle(R.string.menu_network_enable);
     }
 
     private void quit() {
@@ -323,24 +344,28 @@ public class GameActivity extends Activity {
                     if (mGameOverTextView.getVisibility() == View.VISIBLE) {
                         quit();
                     }
-                    if (isDownValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
+                    } else if (isDownValid()) {
                         actionDown();
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", "Chicken Farnsworth"));
                     }
                 } else if (gesture == Gesture.SWIPE_UP) {
-                    if (isUpValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
+                    } else if (isUpValid()) {
                         actionUp();
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", "Chicken Farnsworth"));
                     }
                 } else if (gesture == Gesture.SWIPE_RIGHT) {
-                    if (isRightValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
+                    } else if (isRightValid()) {
                         actionRight();
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", "Chicken Farnsworth"));
                     }
                 } else if (gesture == Gesture.SWIPE_LEFT) {
-                    if (isLeftValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
+                    } else if (isLeftValid()) {
                         actionLeft();
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", "Chicken Farnsworth"));
                     }
                 } else if (gesture == Gesture.TWO_SWIPE_DOWN) {
                     quit();
