@@ -67,6 +67,7 @@ public class GameActivity extends Activity {
     private int mBestScore;
     private boolean isNerdMode;
     private boolean isNetworkGame;
+    private boolean areActionsEnabled;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class GameActivity extends Activity {
         setContentView(R.layout.layout_game);
         setImmersive(true);
         isNetworkGame = false;
+        areActionsEnabled = true;
 
         setupConnection();
 
@@ -147,12 +149,21 @@ public class GameActivity extends Activity {
                     restart();
                 }
                 return true;
+            case R.id.menu_custom:
+                customSetup();
+                return true;
             case R.id.menu_quit:
                 quit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void customSetup() {
+        areActionsEnabled = false;
+        mGameAdapter.clearImages();
+        mGameAdapter.showAllImages();
     }
 
     private void setupConnection() {
@@ -276,6 +287,8 @@ public class GameActivity extends Activity {
     }
 
     private void setupNewGame() {
+        areActionsEnabled = true;
+
         if (isNerdMode) {
             switchMode();
         } else {
@@ -354,32 +367,40 @@ public class GameActivity extends Activity {
                     if (mGameOverTextView.getVisibility() == View.VISIBLE) {
                         quit();
                     }
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
-                        networkActionDown();
-                    } else if (isDownValid()) {
-                        actionDown();
+                    if (areActionsEnabled) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
+                            networkActionDown();
+                        } else if (isDownValid()) {
+                            actionDown();
+                        }
                     }
                 } else if (gesture == Gesture.SWIPE_UP) {
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
-                        networkActionUp();
-                    } else if (isUpValid()) {
-                        actionUp();
+                    if (areActionsEnabled) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
+                            networkActionUp();
+                        } else if (isUpValid()) {
+                            actionUp();
+                        }
                     }
                 } else if (gesture == Gesture.SWIPE_RIGHT) {
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
-                        networkActionRight();
-                    } else if (isRightValid()) {
-                        actionRight();
+                    if (areActionsEnabled) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
+                            networkActionRight();
+                        } else if (isRightValid()) {
+                            actionRight();
+                        }
                     }
                 } else if (gesture == Gesture.SWIPE_LEFT) {
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
-                        networkActionLeft();
-                    } else if (isLeftValid()) {
-                        actionLeft();
+                    if (areActionsEnabled) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
+                            networkActionLeft();
+                        } else if (isLeftValid()) {
+                            actionLeft();
+                        }
                     }
                 } else if (gesture == Gesture.TWO_SWIPE_DOWN) {
                     quit();
@@ -413,19 +434,19 @@ public class GameActivity extends Activity {
     }
 
     private void networkActionLeft() {
-        mActionsTextView.setText(mActionsTextView.getText().toString() + "Left\n");
+        mActionsTextView.setText("Left\n" + mActionsTextView.getText().toString());
     }
 
     private void networkActionRight() {
-        mActionsTextView.setText(mActionsTextView.getText().toString() + "Right\n");
+        mActionsTextView.setText("Right\n" + mActionsTextView.getText().toString());
     }
 
     private void networkActionUp() {
-        mActionsTextView.setText(mActionsTextView.getText().toString() + "Up\n");
+        mActionsTextView.setText("Up\n" + mActionsTextView.getText().toString());
     }
 
     private void networkActionDown() {
-        mActionsTextView.setText(mActionsTextView.getText().toString() + "Down\n");
+        mActionsTextView.setText("Down\n" + mActionsTextView.getText().toString());
     }
 
     private void endTurn(int scoreUpdate) {

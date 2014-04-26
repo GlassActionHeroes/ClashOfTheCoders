@@ -17,6 +17,11 @@
         android:icon="@drawable/ic_menu_network" />
 
     <item
+        android:id="@+id/menu_custom"
+        android:title="@string/menu_custom"
+        android:icon="@drawable/ic_menu_custom" />
+
+    <item
         android:id="@+id/menu_quit"
         android:title="@string/menu_quit"
         android:icon="@drawable/ic_menu_quit" />

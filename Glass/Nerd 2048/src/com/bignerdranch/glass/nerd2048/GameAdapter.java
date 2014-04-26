@@ -49,6 +49,45 @@ public class GameAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void showAllImages() {
+        if (mMode == Mode.NUMBER) {
+            mImageArray[0] = R.drawable.image_2;
+            mImageArray[1] = R.drawable.image_4;
+            mImageArray[2] = R.drawable.image_8;
+            mImageArray[3] = R.drawable.image_16;
+            mImageArray[4] = R.drawable.image_32;
+            mImageArray[5] = R.drawable.image_64;
+            mImageArray[6] = R.drawable.image_128;
+            mImageArray[7] = R.drawable.image_256;
+            mImageArray[8] = R.drawable.image_512;
+            mImageArray[9] = R.drawable.image_1024;
+            mImageArray[10] = R.drawable.image_2048;
+            mImageArray[11] = R.drawable.image_4096;
+            mImageArray[12] = R.drawable.image_8192;
+            mImageArray[13] = R.drawable.image_none;
+            mImageArray[14] = R.drawable.image_none;
+            mImageArray[15] = R.drawable.image_none;
+        } else {
+            mImageArray[0] = R.drawable.image_2_nerd;
+            mImageArray[1] = R.drawable.image_4_nerd;
+            mImageArray[2] = R.drawable.image_8_nerd;
+            mImageArray[3] = R.drawable.image_16_nerd;
+            mImageArray[4] = R.drawable.image_32_nerd;
+            mImageArray[5] = R.drawable.image_64_nerd;
+            mImageArray[6] = R.drawable.image_128_nerd;
+            mImageArray[7] = R.drawable.image_256_nerd;
+            mImageArray[8] = R.drawable.image_512_nerd;
+            mImageArray[9] = R.drawable.image_1024_nerd;
+            mImageArray[10] = R.drawable.image_2048_nerd;
+            mImageArray[11] = R.drawable.image_4096_nerd;
+            mImageArray[12] = R.drawable.image_8192_nerd;
+            mImageArray[13] = R.drawable.image_none_nerd;
+            mImageArray[14] = R.drawable.image_none_nerd;
+            mImageArray[15] = R.drawable.image_none_nerd;
+        }
+        notifyDataSetChanged();
+    }
+
     public GameAdapter(Context c) {
         this(c, Mode.NUMBER);
     }
