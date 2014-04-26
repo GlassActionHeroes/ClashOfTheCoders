@@ -33,7 +33,7 @@ public class GameActivity extends Activity {
     private static final String PUSHER_APP_KEY = "514e04bbf50ba9b0b0b6";
     private static final String PRIVATE_CHANNEL = "private-bnr_2048_channel";
     private static final String EVENT_NAME = "client-send_direction";
-    private static final String USERNAME = "Google Glass";
+    private static final String USERNAME = "GoogleGlass";
 
     private Pusher mPusher;
     private PrivateChannel mChannel;
