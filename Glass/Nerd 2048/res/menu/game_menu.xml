@@ -12,14 +12,14 @@
         android:icon="@drawable/ic_menu_mode" />
 
     <item
+        android:id="@+id/menu_custom"
+        android:title="@string/menu_custom_enable"
+        android:icon="@drawable/ic_menu_custom" />
+
+    <item
         android:id="@+id/menu_network"
         android:title="@string/menu_network_enable"
         android:icon="@drawable/ic_menu_network" />
-
-    <item
-        android:id="@+id/menu_custom"
-        android:title="@string/menu_custom"
-        android:icon="@drawable/ic_menu_custom" />
 
     <item
         android:id="@+id/menu_quit"

@@ -67,7 +67,7 @@ public class GameActivity extends Activity {
     private int mBestScore;
     private boolean isNerdMode;
     private boolean isNetworkGame;
-    private boolean areActionsEnabled;
+    private boolean isNormalSetup;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class GameActivity extends Activity {
         setContentView(R.layout.layout_game);
         setImmersive(true);
         isNetworkGame = false;
-        areActionsEnabled = true;
+        isNormalSetup = true;
 
         setupConnection();
 
@@ -137,6 +137,9 @@ public class GameActivity extends Activity {
                 switchMode();
                 return true;
             case R.id.menu_network:
+                if (!isNormalSetup) {
+                    disableCustomSetup();
+                }
                 if (!isNetworkGame) {
                     isNetworkGame = true;
                     mGameAdapter.clearImages();
@@ -150,7 +153,14 @@ public class GameActivity extends Activity {
                 }
                 return true;
             case R.id.menu_custom:
-                customSetup();
+                if (isNetworkGame) {
+                    disableNetwork();
+                }
+                if (isNormalSetup) {
+                    enableCustomSetup();
+                } else {
+                    restart();
+                }
                 return true;
             case R.id.menu_quit:
                 quit();
@@ -160,10 +170,15 @@ public class GameActivity extends Activity {
         }
     }
 
-    private void customSetup() {
-        areActionsEnabled = false;
+    private void enableCustomSetup() {
+        isNormalSetup = false;
+        MenuItem networkMenuItem = mMenu.findItem(R.id.menu_custom);
+        networkMenuItem.setTitle(R.string.menu_custom_disable);
         mGameAdapter.clearImages();
         mGameAdapter.showAllImages();
+        clearNerds();
+        showAllNerds();
+        updateNerds();
     }
 
     private void setupConnection() {
@@ -224,17 +239,27 @@ public class GameActivity extends Activity {
     }
 
     private void restart() {
+        disableCustomSetup();
         disableNetwork();
         saveBestScore();
         saveMode();
         setupNewGame();
     }
 
+    private void disableCustomSetup() {
+        isNormalSetup = true;
+        mValuesTextView.setText(R.string.values);
+        MenuItem networkMenuItem = mMenu.findItem(R.id.menu_custom);
+        networkMenuItem.setTitle(R.string.menu_custom_enable);
+    }
+
     private void disableNetwork() {
         isNetworkGame = false;
+        mValuesTextView.setText(R.string.values);
         MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
         networkMenuItem.setTitle(R.string.menu_network_enable);
         mActionsTextView.setVisibility(View.GONE);
+        mActionsTextView.setText(R.string.empty);
     }
 
     private void quit() {
@@ -249,7 +274,9 @@ public class GameActivity extends Activity {
             mGameAdapter.setMode(Mode.NUMBER);
         }
         mGameAdapter.convertMode();
-        updateTextViews();
+        if (!isNetworkGame) {
+            updateTextViews();
+        }
     }
 
     private void updateTextViews() {
@@ -287,8 +314,6 @@ public class GameActivity extends Activity {
     }
 
     private void setupNewGame() {
-        areActionsEnabled = true;
-
         if (isNerdMode) {
             switchMode();
         } else {
@@ -367,7 +392,7 @@ public class GameActivity extends Activity {
                     if (mGameOverTextView.getVisibility() == View.VISIBLE) {
                         quit();
                     }
-                    if (areActionsEnabled) {
+                    if (isNormalSetup) {
                         if (isNetworkGame) {
                             mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
                             networkActionDown();
@@ -376,7 +401,7 @@ public class GameActivity extends Activity {
                         }
                     }
                 } else if (gesture == Gesture.SWIPE_UP) {
-                    if (areActionsEnabled) {
+                    if (isNormalSetup) {
                         if (isNetworkGame) {
                             mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
                             networkActionUp();
@@ -385,7 +410,7 @@ public class GameActivity extends Activity {
                         }
                     }
                 } else if (gesture == Gesture.SWIPE_RIGHT) {
-                    if (areActionsEnabled) {
+                    if (isNormalSetup) {
                         if (isNetworkGame) {
                             mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
                             networkActionRight();
@@ -394,7 +419,7 @@ public class GameActivity extends Activity {
                         }
                     }
                 } else if (gesture == Gesture.SWIPE_LEFT) {
-                    if (areActionsEnabled) {
+                    if (isNormalSetup) {
                         if (isNetworkGame) {
                             mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
                             networkActionLeft();
@@ -666,6 +691,20 @@ public class GameActivity extends Activity {
             return mGameAdapter.getNumberFromDrawable(image) * 2;
         }
         return 0;
+    }
+
+    private void showAllNerds() {
+        mNerd_2048_TextView.setVisibility(View.VISIBLE);
+        mNerd_1024_TextView.setVisibility(View.VISIBLE);
+        mNerd_512_TextView.setVisibility(View.VISIBLE);
+        mNerd_256_TextView.setVisibility(View.VISIBLE);
+        mNerd_128_TextView.setVisibility(View.VISIBLE);
+        mNerd_64_TextView.setVisibility(View.VISIBLE);
+        mNerd_32_TextView.setVisibility(View.VISIBLE);
+        mNerd_16_TextView.setVisibility(View.VISIBLE);
+        mNerd_8_TextView.setVisibility(View.VISIBLE);
+        mNerd_4_TextView.setVisibility(View.VISIBLE);
+        mNerd_2_TextView.setVisibility(View.VISIBLE);
     }
 
     private void clearNerds() {
