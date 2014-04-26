@@ -8,12 +8,17 @@
     <string name="menu_quit">Quit</string>
     <string name="menu_network_enable">Enable Network</string>
     <string name="menu_network_disable">Disable Network</string>
+    <string name="menu_custom_enable">Enable Visuals</string>
+    <string name="menu_custom_disable">Disable Visuals</string>
 
     <string name="gameover">Game\nOver</string>
     <string name="score_text">Score:</string>
     <string name="best_text">Best:</string>
     <string name="score">%1$d</string>
     <string name="best">%1$d</string>
+
+    <string name="network">Network\nActions:</string>
+    <string name="empty"></string>
 
     <string name="values">Values:</string>
     <string name="number_2">2</string>
@@ -31,18 +36,18 @@
     <string name="number_8192">8192</string>
 
     <string name="nerds">Nerds:</string>
-    <string name="nerd_2">2 -- Paul</string>
-    <string name="nerd_4">4 -- Paul</string>
-    <string name="nerd_8">8 -- Paul</string>
-    <string name="nerd_16">16 -- Paul</string>
-    <string name="nerd_32">32 -- Paul</string>
-    <string name="nerd_64">64 -- Paul</string>
-    <string name="nerd_128">128 -- Paul</string>
-    <string name="nerd_256">256 -- Paul</string>
-    <string name="nerd_512">512 -- Paul</string>
-    <string name="nerd_1024">1024 -- Paul</string>
-    <string name="nerd_2048">2048 -- Paul</string>
-    <string name="nerd_4096">4096 -- Paul</string>
-    <string name="nerd_8192">8192 -- Paul</string>
+    <string name="nerd_2">Paul</string>
+    <string name="nerd_4">Mystery Sage</string>
+    <string name="nerd_8">Compton</string>
+    <string name="nerd_16">Chae</string>
+    <string name="nerd_32">Sean</string>
+    <string name="nerd_64">Josh</string>
+    <string name="nerd_128">Mat Jackson</string>
+    <string name="nerd_256">Chris Stewart</string>
+    <string name="nerd_512">The Don</string>
+    <string name="nerd_1024">Brian Hardy</string>
+    <string name="nerd_2048">Stacy</string>
+    <string name="nerd_4096">Aaron</string>
+    <string name="nerd_8192">CBQ</string>
 
 </resources>

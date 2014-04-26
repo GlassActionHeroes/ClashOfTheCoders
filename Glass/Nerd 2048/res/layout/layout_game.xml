@@ -96,14 +96,29 @@
             android:text="@string/values"
             android:textColor="@color/white"
             android:textSize="30px"
+            android:textStyle="bold"
             android:paddingTop="5px"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="2px"
             android:background="@color/white"
             android:layout_margin="@dimen/margin_divider" />
+
+        <TextView
+            android:id="@+id/text_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty"
+            android:textColor="@color/white"
+            android:textSize="30px"
+            android:textStyle="bold"
+            android:paddingTop="5px"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/text_number_2"

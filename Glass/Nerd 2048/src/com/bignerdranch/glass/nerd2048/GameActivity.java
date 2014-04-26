@@ -33,7 +33,7 @@ public class GameActivity extends Activity {
     private static final String PUSHER_APP_KEY = "514e04bbf50ba9b0b0b6";
     private static final String PRIVATE_CHANNEL = "private-bnr_2048_channel";
     private static final String EVENT_NAME = "client-send_direction";
-    private static final String USERNAME = "Google Glass";
+    private static final String USERNAME = "GoogleGlass";
 
     private Pusher mPusher;
     private PrivateChannel mChannel;
@@ -49,6 +49,8 @@ public class GameActivity extends Activity {
     private TextView mGameOverTextView;
 
     private TextView mValuesTextView;
+    private TextView mActionsTextView;
+
     private TextView mNerd_2_TextView;
     private TextView mNerd_4_TextView;
     private TextView mNerd_8_TextView;
@@ -65,6 +67,7 @@ public class GameActivity extends Activity {
     private int mBestScore;
     private boolean isNerdMode;
     private boolean isNetworkGame;
+    private boolean isNormalSetup;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class GameActivity extends Activity {
         setContentView(R.layout.layout_game);
         setImmersive(true);
         isNetworkGame = false;
+        isNormalSetup = true;
 
         setupConnection();
 
@@ -91,6 +95,8 @@ public class GameActivity extends Activity {
         mGameOverTextView = (TextView) findViewById(R.id.text_gameover);
 
         mValuesTextView = (TextView) findViewById(R.id.text_values);
+        mActionsTextView = (TextView) findViewById(R.id.text_actions);
+
         mNerd_2_TextView = (TextView) findViewById(R.id.text_number_2);
         mNerd_4_TextView = (TextView) findViewById(R.id.text_number_4);
         mNerd_8_TextView = (TextView) findViewById(R.id.text_number_8);
@@ -130,22 +136,49 @@ public class GameActivity extends Activity {
             case R.id.menu_mode:
                 switchMode();
                 return true;
-            case R.id.menu_quit:
-                quit();
-                return true;
             case R.id.menu_network:
+                if (!isNormalSetup) {
+                    disableCustomSetup();
+                }
                 if (!isNetworkGame) {
                     isNetworkGame = true;
                     mGameAdapter.clearImages();
                     MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
                     networkMenuItem.setTitle(R.string.menu_network_disable);
+                    clearNerds();
+                    mValuesTextView.setText(R.string.network);
+                    mActionsTextView.setVisibility(View.VISIBLE);
                 } else {
                     restart();
                 }
                 return true;
+            case R.id.menu_custom:
+                if (isNetworkGame) {
+                    disableNetwork();
+                }
+                if (isNormalSetup) {
+                    enableCustomSetup();
+                } else {
+                    restart();
+                }
+                return true;
+            case R.id.menu_quit:
+                quit();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void enableCustomSetup() {
+        isNormalSetup = false;
+        MenuItem networkMenuItem = mMenu.findItem(R.id.menu_custom);
+        networkMenuItem.setTitle(R.string.menu_custom_disable);
+        mGameAdapter.clearImages();
+        mGameAdapter.showAllImages();
+        clearNerds();
+        showAllNerds();
+        updateNerds();
     }
 
     private void setupConnection() {
@@ -206,16 +239,27 @@ public class GameActivity extends Activity {
     }
 
     private void restart() {
+        disableCustomSetup();
         disableNetwork();
         saveBestScore();
         saveMode();
         setupNewGame();
     }
 
+    private void disableCustomSetup() {
+        isNormalSetup = true;
+        mValuesTextView.setText(R.string.values);
+        MenuItem networkMenuItem = mMenu.findItem(R.id.menu_custom);
+        networkMenuItem.setTitle(R.string.menu_custom_enable);
+    }
+
     private void disableNetwork() {
         isNetworkGame = false;
+        mValuesTextView.setText(R.string.values);
         MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
         networkMenuItem.setTitle(R.string.menu_network_enable);
+        mActionsTextView.setVisibility(View.GONE);
+        mActionsTextView.setText(R.string.empty);
     }
 
     private void quit() {
@@ -230,7 +274,9 @@ public class GameActivity extends Activity {
             mGameAdapter.setMode(Mode.NUMBER);
         }
         mGameAdapter.convertMode();
-        updateTextViews();
+        if (!isNetworkGame) {
+            updateTextViews();
+        }
     }
 
     private void updateTextViews() {
@@ -270,6 +316,8 @@ public class GameActivity extends Activity {
     private void setupNewGame() {
         if (isNerdMode) {
             switchMode();
+        } else {
+            updateTextViews();
         }
 
         mGameOverTextView.setVisibility(View.INVISIBLE);
@@ -344,28 +392,40 @@ public class GameActivity extends Activity {
                     if (mGameOverTextView.getVisibility() == View.VISIBLE) {
                         quit();
                     }
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
-                    } else if (isDownValid()) {
-                        actionDown();
+                    if (isNormalSetup) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
+                            networkActionDown();
+                        } else if (isDownValid()) {
+                            actionDown();
+                        }
                     }
                 } else if (gesture == Gesture.SWIPE_UP) {
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
-                    } else if (isUpValid()) {
-                        actionUp();
+                    if (isNormalSetup) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
+                            networkActionUp();
+                        } else if (isUpValid()) {
+                            actionUp();
+                        }
                     }
                 } else if (gesture == Gesture.SWIPE_RIGHT) {
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
-                    } else if (isRightValid()) {
-                        actionRight();
+                    if (isNormalSetup) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
+                            networkActionRight();
+                        } else if (isRightValid()) {
+                            actionRight();
+                        }
                     }
                 } else if (gesture == Gesture.SWIPE_LEFT) {
-                    if (isNetworkGame) {
-                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
-                    } else if (isLeftValid()) {
-                        actionLeft();
+                    if (isNormalSetup) {
+                        if (isNetworkGame) {
+                            mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
+                            networkActionLeft();
+                        } else if (isLeftValid()) {
+                            actionLeft();
+                        }
                     }
                 } else if (gesture == Gesture.TWO_SWIPE_DOWN) {
                     quit();
@@ -396,6 +456,22 @@ public class GameActivity extends Activity {
     private void actionDown() {
         int points = moveDown();
         endTurn(points);
+    }
+
+    private void networkActionLeft() {
+        mActionsTextView.setText("Left\n" + mActionsTextView.getText().toString());
+    }
+
+    private void networkActionRight() {
+        mActionsTextView.setText("Right\n" + mActionsTextView.getText().toString());
+    }
+
+    private void networkActionUp() {
+        mActionsTextView.setText("Up\n" + mActionsTextView.getText().toString());
+    }
+
+    private void networkActionDown() {
+        mActionsTextView.setText("Down\n" + mActionsTextView.getText().toString());
     }
 
     private void endTurn(int scoreUpdate) {
@@ -615,6 +691,20 @@ public class GameActivity extends Activity {
             return mGameAdapter.getNumberFromDrawable(image) * 2;
         }
         return 0;
+    }
+
+    private void showAllNerds() {
+        mNerd_2048_TextView.setVisibility(View.VISIBLE);
+        mNerd_1024_TextView.setVisibility(View.VISIBLE);
+        mNerd_512_TextView.setVisibility(View.VISIBLE);
+        mNerd_256_TextView.setVisibility(View.VISIBLE);
+        mNerd_128_TextView.setVisibility(View.VISIBLE);
+        mNerd_64_TextView.setVisibility(View.VISIBLE);
+        mNerd_32_TextView.setVisibility(View.VISIBLE);
+        mNerd_16_TextView.setVisibility(View.VISIBLE);
+        mNerd_8_TextView.setVisibility(View.VISIBLE);
+        mNerd_4_TextView.setVisibility(View.VISIBLE);
+        mNerd_2_TextView.setVisibility(View.VISIBLE);
     }
 
     private void clearNerds() {
