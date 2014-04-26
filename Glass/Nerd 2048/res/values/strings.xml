@@ -6,6 +6,8 @@
     <string name="menu_restart">Restart</string>
     <string name="menu_mode">Switch Mode</string>
     <string name="menu_quit">Quit</string>
+    <string name="menu_network_enable">Enable Network</string>
+    <string name="menu_network_disable">Disable Network</string>
 
     <string name="gameover">Game\nOver</string>
     <string name="score_text">Score:</string>

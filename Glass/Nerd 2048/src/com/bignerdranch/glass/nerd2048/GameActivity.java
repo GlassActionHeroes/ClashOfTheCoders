@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.*;
 import android.widget.GridView;
@@ -11,6 +12,14 @@ import android.widget.TextView;
 import com.bignerdranch.glass.nerd2048.GameAdapter.Mode;
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.PrivateChannel;
+import com.pusher.client.channel.PrivateChannelEventListener;
+import com.pusher.client.connection.ConnectionEventListener;
+import com.pusher.client.connection.ConnectionState;
+import com.pusher.client.connection.ConnectionStateChange;
+import com.pusher.client.util.HttpAuthorizer;
 
 import java.util.Random;
 
@@ -21,6 +30,15 @@ public class GameActivity extends Activity {
     private static final String KEY_BEST = "com.bignerdranch.glass.best";
     private static final String KEY_MODE = "com.bignerdranch.glass.mode";
 
+    private static final String PUSHER_APP_KEY = "514e04bbf50ba9b0b0b6";
+    private static final String PRIVATE_CHANNEL = "private-bnr_2048_channel";
+    private static final String EVENT_NAME = "client-send_direction";
+    private static final String USERNAME = "Google Glass";
+
+    private Pusher mPusher;
+    private PrivateChannel mChannel;
+
+    private Menu mMenu;
     private Random random = new Random();
 
     private GameAdapter mGameAdapter;
@@ -46,12 +64,16 @@ public class GameActivity extends Activity {
     private int mCurrentScore;
     private int mBestScore;
     private boolean isNerdMode;
+    private boolean isNetworkGame;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_game);
         setImmersive(true);
+        isNetworkGame = false;
+
+        setupConnection();
 
         loadMode();
         if (isNerdMode) {
@@ -95,6 +117,7 @@ public class GameActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -110,15 +133,89 @@ public class GameActivity extends Activity {
             case R.id.menu_quit:
                 quit();
                 return true;
+            case R.id.menu_network:
+                if (!isNetworkGame) {
+                    isNetworkGame = true;
+                    mGameAdapter.clearImages();
+                    MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
+                    networkMenuItem.setTitle(R.string.menu_network_disable);
+                } else {
+                    restart();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void setupConnection() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        HttpAuthorizer authorizer = new HttpAuthorizer("http://mysterious-forest-1989.herokuapp.com/pusher/auth");
+        PusherOptions options = new PusherOptions().setAuthorizer(authorizer);
+        mPusher = new Pusher(PUSHER_APP_KEY, options);
+
+        mPusher.connect(new ConnectionEventListener() {
+            @Override
+            public void onConnectionStateChange(ConnectionStateChange change) {
+                Log.d(TAG, "State changed to " + change.getCurrentState() + " from " + change.getPreviousState());
+            }
+
+            @Override
+            public void onError(String message, String code, Exception e) {
+                Log.d(TAG, "There was a problem connecting!");
+            }
+        }, ConnectionState.ALL);
+
+        mChannel = mPusher.subscribePrivate(PRIVATE_CHANNEL,
+                new PrivateChannelEventListener() {
+                    @Override
+                    public void onAuthenticationFailure(String message, Exception e) {
+                        Log.d(TAG, String.format("Authentication failure due to [%s], exception was [%s]", message, e));
+                    }
+
+                    @Override
+                    public void onSubscriptionSucceeded(String channelName) {
+                        Log.d(TAG, "Subscription succeeded.");
+                    }
+
+                    @Override
+                    public void onEvent(String channelName, String eventName, String data) {
+                        Log.d(TAG, "Received event: " + eventName + " with data: " + data);
+                    }
+                }
+        );
+
+        mChannel.bind(EVENT_NAME, new PrivateChannelEventListener() {
+            @Override
+            public void onAuthenticationFailure(String message, Exception e) {
+                Log.d(TAG, String.format("Authentication failure due to [%s], exception was [%s]", message, e));
+            }
+
+            @Override
+            public void onSubscriptionSucceeded(String channelName) {
+                Log.d(TAG, "Subscription succeeded.");
+            }
+
+            @Override
+            public void onEvent(String channelName, String eventName, String data) {
+                Log.d(TAG, "Received event: " + eventName + " with data: " + data);
+            }
+        });
+    }
+
     private void restart() {
+        disableNetwork();
         saveBestScore();
         saveMode();
         setupNewGame();
+    }
+
+    private void disableNetwork() {
+        isNetworkGame = false;
+        MenuItem networkMenuItem = mMenu.findItem(R.id.menu_network);
+        networkMenuItem.setTitle(R.string.menu_network_enable);
     }
 
     private void quit() {
@@ -247,19 +344,27 @@ public class GameActivity extends Activity {
                     if (mGameOverTextView.getVisibility() == View.VISIBLE) {
                         quit();
                     }
-                    if (isDownValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "down", USERNAME));
+                    } else if (isDownValid()) {
                         actionDown();
                     }
                 } else if (gesture == Gesture.SWIPE_UP) {
-                    if (isUpValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "up", USERNAME));
+                    } else if (isUpValid()) {
                         actionUp();
                     }
                 } else if (gesture == Gesture.SWIPE_RIGHT) {
-                    if (isRightValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "right", USERNAME));
+                    } else if (isRightValid()) {
                         actionRight();
                     }
                 } else if (gesture == Gesture.SWIPE_LEFT) {
-                    if (isLeftValid()) {
+                    if (isNetworkGame) {
+                        mChannel.trigger(EVENT_NAME, String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", "left", USERNAME));
+                    } else if (isLeftValid()) {
                         actionLeft();
                     }
                 } else if (gesture == Gesture.TWO_SWIPE_DOWN) {
