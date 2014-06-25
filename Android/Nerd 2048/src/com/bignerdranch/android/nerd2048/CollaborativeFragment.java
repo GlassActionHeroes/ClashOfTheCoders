@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
@@ -25,7 +24,7 @@ public class CollaborativeFragment extends Fragment {
 	private static final String PUSHER_APP_KEY = "514e04bbf50ba9b0b0b6";
 	private static final String PRIVATE_CHANNEL = "private-bnr_2048_channel";
 	private static final String EVENT_NAME = "client-send_direction";
-	private static final String DEFAULT_USERNAME = "Unknown Android Nerd";
+	private static final String USERNAME = "Android";
 
 	private enum Move {
 		none, up, down, left, right;
@@ -36,7 +35,6 @@ public class CollaborativeFragment extends Fragment {
 	private Pusher mPusher;
 	private PrivateChannel mChannel;
 
-	private EditText mUserName;
 	private ImageView mArrow;
 
 	@Override
@@ -112,7 +110,6 @@ public class CollaborativeFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_collaborative, container, false);
 
-		mUserName = (EditText) view.findViewById(R.id.username);
 		mArrow = (ImageView) view.findViewById(R.id.arrow);
 
 		view.setOnTouchListener(new View.OnTouchListener() {
@@ -196,9 +193,7 @@ public class CollaborativeFragment extends Fragment {
 				}
 			}
 
-			String username = mUserName.getText().toString();
-			username = TextUtils.isEmpty(username) ? DEFAULT_USERNAME : username;
-			String event = String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", mMove, username);
+			String event = String.format("{\"direction\":\"%s\",\"name\":\"%s\"}", mMove, USERNAME);
 			mChannel.trigger(EVENT_NAME, event);
 
 			updateUI();
